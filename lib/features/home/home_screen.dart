@@ -1,0 +1,221 @@
+// lib/features/home/home_screen.dart
+
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/constants/app_constants.dart';
+import '../../core/theme/app_theme.dart';
+import '../../widgets/common/gradient_card.dart';
+import '../../widgets/common/tappico_app_bar.dart';
+
+class HomeScreen extends ConsumerWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      backgroundColor: AppColors.bgLight,
+      appBar: const TapPicoAppBar(title: 'TapPico', showSettings: true),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Welcome banner
+              _WelcomeBanner()
+                  .animate()
+                  .fadeIn(duration: 500.ms)
+                  .slideY(begin: -0.1, curve: Curves.easeOutCubic),
+
+              const SizedBox(height: 24),
+
+              // Section label
+              Text(
+                'What do you want to learn?',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ).animate().fadeIn(delay: 200.ms, duration: 400.ms),
+
+              const SizedBox(height: 16),
+
+              // 2-column grid of category cards
+              GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 0.88,
+                children: [
+                  GradientCategoryCard(
+                    title: 'Alphabets',
+                    emoji: '🔤',
+                    subtitle: 'A to Z • 26 letters',
+                    gradient: AppColors.alphabetGradient,
+                    onTap: () => Navigator.pushNamed(context, AppConstants.alphabetsRoute),
+                    animIndex: 0,
+                  ),
+                  GradientCategoryCard(
+                    title: 'Numbers',
+                    emoji: '🔢',
+                    subtitle: '1 to 20 • counting',
+                    gradient: AppColors.numberGradient,
+                    onTap: () => Navigator.pushNamed(context, AppConstants.numbersRoute),
+                    animIndex: 1,
+                  ),
+                  GradientCategoryCard(
+                    title: 'Shapes',
+                    emoji: '🔷',
+                    subtitle: '8 shapes to learn',
+                    gradient: AppColors.shapeGradient,
+                    onTap: () => Navigator.pushNamed(context, AppConstants.shapesRoute),
+                    animIndex: 2,
+                  ),
+                  GradientCategoryCard(
+                    title: 'Practice',
+                    emoji: '🏆',
+                    subtitle: 'Quiz yourself!',
+                    gradient: AppColors.practiceGradient,
+                    onTap: () => Navigator.pushNamed(context, AppConstants.practiceRoute),
+                    animIndex: 3,
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // Fun facts strip
+              _FunFactsStrip()
+                  .animate()
+                  .fadeIn(delay: 600.ms, duration: 500.ms)
+                  .slideY(begin: 0.1, curve: Curves.easeOutCubic),
+
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _WelcomeBanner extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final hour = DateTime.now().hour;
+    final greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+    final emoji = hour < 12 ? '🌅' : hour < 17 ? '☀️' : '🌙';
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFFD600), Color(0xFFFF6D00)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFFF6D00).withOpacity(0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '$greeting! $emoji',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Ready to\nlearn today?',
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                    height: 1.2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Text('🚀', style: TextStyle(fontSize: 64)),
+        ],
+      ),
+    );
+  }
+}
+
+class _FunFactsStrip extends StatelessWidget {
+  final List<_FactItem> facts = const [
+    _FactItem('🌟', '26 Letters', 'A to Z alphabet'),
+    _FactItem('🔢', '20 Numbers', 'Count with fun'),
+    _FactItem('🔷', '8 Shapes', 'All around us'),
+    _FactItem('🏆', 'Quizzes', 'Test yourself'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Quick Stats', style: Theme.of(context).textTheme.titleLarge),
+        const SizedBox(height: 12),
+        Row(
+          children: facts
+              .map((f) => Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.06),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Text(f.emoji, style: const TextStyle(fontSize: 22)),
+                          const SizedBox(height: 4),
+                          Text(
+                            f.label,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textDark,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ))
+              .toList(),
+        ),
+      ],
+    );
+  }
+}
+
+class _FactItem {
+  final String emoji, label, sub;
+  const _FactItem(this.emoji, this.label, this.sub);
+}
