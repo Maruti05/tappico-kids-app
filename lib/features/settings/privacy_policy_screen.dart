@@ -161,6 +161,8 @@ For any questions or concerns:
         showSettings: false,
       ),
       body: const SafeArea(
+        top: false,
+        bottom: false,
         child: _PrivacyContent(),
       ),
     );

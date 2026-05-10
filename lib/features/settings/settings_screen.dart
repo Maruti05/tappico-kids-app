@@ -18,11 +18,17 @@ class SettingsScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.bgLight,
-      appBar: const TapPicoAppBar(title: 'Settings', showSettings: false),
+      appBar: const TapPicoAppBar(
+        title: 'Settings',
+        showSettings: false,
+        gradientColors: AppColors.settingsGradient,
+      ),
       body: SafeArea(
+        top: false,
+        bottom: false,
         child: ListView(
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           children: [
             const _AppInfoCard()
                 .animate()
@@ -42,14 +48,14 @@ class SettingsScreen extends ConsumerWidget {
                     icon: soundEnabled
                         ? Icons.volume_up_rounded
                         : Icons.volume_off_rounded,
-                    iconColor:
-                        soundEnabled ? AppColors.primary : AppColors.textLight,
+                    iconColor: soundEnabled
+                        ? AppColors.primary
+                        : AppColors.textLight,
                     title: 'Sound Effects',
                     subtitle: soundEnabled ? 'On — tap to hear!' : 'Off',
                     trailing: Switch.adaptive(
                       value: soundEnabled,
-                      onChanged: (v) =>
-                          ref.read(soundProvider.notifier).set(v),
+                      onChanged: (v) => ref.read(soundProvider.notifier).set(v),
                       activeColor: AppColors.primary,
                     ),
                   ),
@@ -63,28 +69,39 @@ class SettingsScreen extends ConsumerWidget {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.speed_rounded,
-                                color: AppColors.secondary, size: 22),
+                            const Icon(
+                              Icons.speed_rounded,
+                              color: AppColors.secondary,
+                              size: 22,
+                            ),
                             const SizedBox(width: 12),
                             const Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Voice Speed',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.textDark)),
-                                  Text('Adjust how fast words are spoken',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: AppColors.textLight)),
+                                  Text(
+                                    'Voice Speed',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textDark,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Adjust how fast words are spoken',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.textLight,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppColors.secondary.withOpacity(0.15),
                                 borderRadius: BorderRadius.circular(10),
@@ -193,8 +210,10 @@ class SettingsScreen extends ConsumerWidget {
                     iconColor: AppColors.cyan,
                     title: 'Privacy Policy',
                     subtitle: 'Tap to read our privacy policy',
-                    trailing: const Icon(Icons.chevron_right_rounded,
-                        color: Color(0xFF888AAA)),
+                    trailing: const Icon(
+                      Icons.chevron_right_rounded,
+                      color: Color(0xFF888AAA),
+                    ),
                     onTap: () {
                       Navigator.pushNamed(
                         context,
@@ -237,7 +256,7 @@ class _AppInfoCard extends StatelessWidget {
             color: AppColors.pink.withOpacity(0.35),
             blurRadius: 20,
             offset: const Offset(0, 8),
-          )
+          ),
         ],
       ),
       child: Row(
@@ -260,16 +279,20 @@ class _AppInfoCard extends StatelessWidget {
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('TapPico',
-                  style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white)),
-              Text('Kids ABC & 123 Learning',
-                  style: TextStyle(color: Colors.white70)),
+              Text(
+                'TapPico',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                'Kids ABC & 123 Learning',
+                style: TextStyle(color: Colors.white70),
+              ),
               SizedBox(height: 4),
-              Text('by Vedica Labs',
-                  style: TextStyle(color: Colors.white60)),
+              Text('by Vedica Labs', style: TextStyle(color: Colors.white60)),
             ],
           ),
         ],
@@ -322,13 +345,10 @@ class _SettingsCard extends StatelessWidget {
               color: Colors.black.withOpacity(0.06),
               blurRadius: 16,
               offset: const Offset(0, 4),
-            )
+            ),
           ],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: child,
-        ),
+        child: ClipRRect(borderRadius: BorderRadius.circular(24), child: child),
       ),
     );
   }
@@ -375,15 +395,21 @@ class _SettingRow extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title,
-                        style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textDark)),
-                    Text(subtitle,
-                        style: const TextStyle(
-                            fontSize: 12,
-                            color: AppColors.textLight)),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textDark,
+                      ),
+                    ),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textLight,
+                      ),
+                    ),
                   ],
                 ),
               ),

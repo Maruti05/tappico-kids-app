@@ -1,24 +1,31 @@
 // lib/features/practice/practice_screen.dart
 
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tappico/widgets/common/ad_banner_widget.dart';
+
 import '../../core/constants/alphabet_data.dart';
+import '../../core/constants/fruit_data.dart';
+import '../../core/constants/bird_data.dart';
 import '../../core/constants/number_data.dart';
 import '../../core/theme/app_theme.dart';
 import '../../services/providers.dart';
 import '../../widgets/common/tappico_app_bar.dart';
 
-// ─── Quiz models ────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Quiz Models
+// ─────────────────────────────────────────────────────────────────────────────
 
-enum QuizCategory { alphabets, numbers, shapes }
+enum QuizCategory { alphabets, numbers, shapes, fruits, birds }
 
 class QuizQuestion {
-  final String prompt;         // "Tap A"
-  final String correctAnswer;  // "A"
-  final List<String> options;  // ["A","B","C","D"]
+  final String prompt;
+  final String correctAnswer;
+  final List<String> options;
   final String emoji;
 
   const QuizQuestion({
@@ -29,67 +36,103 @@ class QuizQuestion {
   });
 }
 
-// ─── Providers ───────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Providers
+// ─────────────────────────────────────────────────────────────────────────────
 
 class _CategoryNotifier extends Notifier<QuizCategory> {
   @override
   QuizCategory build() => QuizCategory.alphabets;
+
   void set(QuizCategory category) => state = category;
 }
-final _categoryProvider = NotifierProvider<_CategoryNotifier, QuizCategory>(_CategoryNotifier.new);
+
+final _categoryProvider = NotifierProvider<_CategoryNotifier, QuizCategory>(
+  _CategoryNotifier.new,
+);
 
 class _QuestionNotifier extends Notifier<QuizQuestion?> {
   @override
   QuizQuestion? build() => null;
+
   void set(QuizQuestion? question) => state = question;
 }
-final _questionProvider = NotifierProvider<_QuestionNotifier, QuizQuestion?>(_QuestionNotifier.new);
+
+final _questionProvider = NotifierProvider<_QuestionNotifier, QuizQuestion?>(
+  _QuestionNotifier.new,
+);
 
 class _ScoreNotifier extends Notifier<int> {
   @override
   int build() => 0;
+
   void set(int score) => state = score;
+
   void update(int Function(int) updater) => state = updater(state);
 }
-final _scoreProvider = NotifierProvider<_ScoreNotifier, int>(_ScoreNotifier.new);
+
+final _scoreProvider = NotifierProvider<_ScoreNotifier, int>(
+  _ScoreNotifier.new,
+);
 
 class _TotalNotifier extends Notifier<int> {
   @override
   int build() => 0;
+
   void set(int total) => state = total;
+
   void update(int Function(int) updater) => state = updater(state);
 }
-final _totalProvider = NotifierProvider<_TotalNotifier, int>(_TotalNotifier.new);
+
+final _totalProvider = NotifierProvider<_TotalNotifier, int>(
+  _TotalNotifier.new,
+);
+
+enum _AnswerState { none, correct, wrong }
 
 class _AnswerStateNotifier extends Notifier<_AnswerState> {
   @override
   _AnswerState build() => _AnswerState.none;
+
   void set(_AnswerState answerState) => state = answerState;
 }
-final _answerStateProvider = NotifierProvider<_AnswerStateNotifier, _AnswerState>(_AnswerStateNotifier.new);
+
+final _answerStateProvider =
+    NotifierProvider<_AnswerStateNotifier, _AnswerState>(
+      _AnswerStateNotifier.new,
+    );
 
 class _SelectedAnswerNotifier extends Notifier<String?> {
   @override
   String? build() => null;
+
   void set(String? selectedAnswer) => state = selectedAnswer;
 }
-final _selectedAnswerProvider = NotifierProvider<_SelectedAnswerNotifier, String?>(_SelectedAnswerNotifier.new);
 
-enum _AnswerState { none, correct, wrong }
+final _selectedAnswerProvider =
+    NotifierProvider<_SelectedAnswerNotifier, String?>(
+      _SelectedAnswerNotifier.new,
+    );
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Question Generators
+// ─────────────────────────────────────────────────────────────────────────────
 
 QuizQuestion _generateAlphabetQuestion() {
   final rng = Random();
+
   final correct = alphabetData[rng.nextInt(alphabetData.length)];
+
   final wrongs = (alphabetData.toList()..shuffle())
       .where((e) => e.letter != correct.letter)
       .take(3)
       .map((e) => e.letter)
       .toList();
+
   final opts = [...wrongs, correct.letter]..shuffle();
+
   return QuizQuestion(
-    prompt: 'Tap the letter  👇',
+    prompt: 'Tap the letter 👇',
     correctAnswer: correct.letter,
     options: opts,
     emoji: correct.emoji,
@@ -98,16 +141,19 @@ QuizQuestion _generateAlphabetQuestion() {
 
 QuizQuestion _generateNumberQuestion() {
   final rng = Random();
-  final numbers = numberData;
-  final correct = numbers[rng.nextInt(numbers.length)];
-  final wrongs = (numbers.toList()..shuffle())
+
+  final correct = numberData[rng.nextInt(numberData.length)];
+
+  final wrongs = (numberData.toList()..shuffle())
       .where((e) => e.number != correct.number)
       .take(3)
       .map((e) => '${e.number}')
       .toList();
+
   final opts = [...wrongs, '${correct.number}']..shuffle();
+
   return QuizQuestion(
-    prompt: 'Tap  ${correct.word}  👇',
+    prompt: 'Tap ${correct.word} 👇',
     correctAnswer: '${correct.number}',
     options: opts,
     emoji: correct.emoji,
@@ -116,22 +162,70 @@ QuizQuestion _generateNumberQuestion() {
 
 QuizQuestion _generateShapeQuestion() {
   final rng = Random();
+
   final correct = shapeData[rng.nextInt(shapeData.length)];
+
   final wrongs = (shapeData.toList()..shuffle())
       .where((e) => e.name != correct.name)
       .take(3)
       .map((e) => e.name)
       .toList();
+
   final opts = [...wrongs, correct.name]..shuffle();
+
   return QuizQuestion(
-    prompt: 'Tap the shape  👇',
+    prompt: 'Tap the shape 👇',
     correctAnswer: correct.name,
     options: opts,
     emoji: correct.emoji,
   );
 }
 
-// ─── Screen ──────────────────────────────────────────────────────────────────
+QuizQuestion _generateFruitQuestion() {
+  final rng = Random();
+
+  final correct = fruitData[rng.nextInt(fruitData.length)];
+
+  final wrongs = (fruitData.toList()..shuffle())
+      .where((e) => e.name != correct.name)
+      .take(3)
+      .map((e) => e.name)
+      .toList();
+
+  final opts = [...wrongs, correct.name]..shuffle();
+
+  return QuizQuestion(
+    prompt: 'Tap the fruit 👇',
+    correctAnswer: correct.name,
+    options: opts,
+    emoji: correct.emoji,
+  );
+}
+
+QuizQuestion _generateBirdQuestion() {
+  final rng = Random();
+
+  final correct = birdData[rng.nextInt(birdData.length)];
+
+  final wrongs = (birdData.toList()..shuffle())
+      .where((e) => e.name != correct.name)
+      .take(3)
+      .map((e) => e.name)
+      .toList();
+
+  final opts = [...wrongs, correct.name]..shuffle();
+
+  return QuizQuestion(
+    prompt: 'Tap the bird 👇',
+    correctAnswer: correct.name,
+    options: opts,
+    emoji: correct.emoji,
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Practice Screen
+// ─────────────────────────────────────────────────────────────────────────────
 
 class PracticeScreen extends ConsumerStatefulWidget {
   const PracticeScreen({super.key});
@@ -144,20 +238,28 @@ class _PracticeScreenState extends ConsumerState<PracticeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _nextQuestion());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _nextQuestion();
+    });
   }
 
   void _showCategorySheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      useSafeArea: true,
       builder: (context) => _CategoryBottomSheet(
         selected: ref.read(_categoryProvider),
         onSelect: (cat) {
           ref.read(_categoryProvider.notifier).set(cat);
+
           ref.read(_scoreProvider.notifier).set(0);
           ref.read(_totalProvider.notifier).set(0);
+
           _nextQuestion();
+
           Navigator.pop(context);
         },
       ),
@@ -166,126 +268,166 @@ class _PracticeScreenState extends ConsumerState<PracticeScreen> {
 
   void _nextQuestion() {
     final cat = ref.read(_categoryProvider);
+
     QuizQuestion q;
+
     switch (cat) {
-      case QuizCategory.alphabets: q = _generateAlphabetQuestion(); break;
-      case QuizCategory.numbers:   q = _generateNumberQuestion();   break;
-      case QuizCategory.shapes:    q = _generateShapeQuestion();     break;
+      case QuizCategory.alphabets:
+        q = _generateAlphabetQuestion();
+        break;
+
+      case QuizCategory.numbers:
+        q = _generateNumberQuestion();
+        break;
+
+      case QuizCategory.shapes:
+        q = _generateShapeQuestion();
+        break;
+
+      case QuizCategory.fruits:
+        q = _generateFruitQuestion();
+        break;
+
+      case QuizCategory.birds:
+        q = _generateBirdQuestion();
+        break;
     }
+
     ref.read(_questionProvider.notifier).set(q);
+
     ref.read(_answerStateProvider.notifier).set(_AnswerState.none);
+
     ref.read(_selectedAnswerProvider.notifier).set(null);
   }
 
   Future<void> _onAnswer(String answer) async {
     final q = ref.read(_questionProvider);
+
     if (q == null) return;
-    if (ref.read(_answerStateProvider) != _AnswerState.none) return;
+
+    if (ref.read(_answerStateProvider) != _AnswerState.none) {
+      return;
+    }
 
     ref.read(_selectedAnswerProvider.notifier).set(answer);
+
     ref.read(_totalProvider.notifier).update((s) => s + 1);
 
     final isCorrect = answer == q.correctAnswer;
-    ref.read(_answerStateProvider.notifier).set(
-        isCorrect ? _AnswerState.correct : _AnswerState.wrong);
+
+    ref
+        .read(_answerStateProvider.notifier)
+        .set(isCorrect ? _AnswerState.correct : _AnswerState.wrong);
 
     if (isCorrect) {
       ref.read(_scoreProvider.notifier).update((s) => s + 1);
+
       ref.read(ttsServiceProvider).speak('Correct! Great job!');
     } else {
       ref.read(ttsServiceProvider).speak('Try again! You can do it!');
     }
 
     await Future.delayed(const Duration(milliseconds: 1600));
+
     if (isCorrect) {
       _nextQuestion();
     } else {
       ref.read(_answerStateProvider.notifier).set(_AnswerState.none);
+
       ref.read(_selectedAnswerProvider.notifier).set(null);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final question    = ref.watch(_questionProvider);
-    final score       = ref.watch(_scoreProvider);
-    final total       = ref.watch(_totalProvider);
+    final question = ref.watch(_questionProvider);
+
+    final score = ref.watch(_scoreProvider);
+
+    final total = ref.watch(_totalProvider);
+
     final answerState = ref.watch(_answerStateProvider);
-    final category    = ref.watch(_categoryProvider);
 
     return Scaffold(
       backgroundColor: AppColors.bgLight,
       appBar: TapPicoAppBar(
         title: 'Practice',
         showSettings: false,
+        gradientColors: AppColors.practiceGradient,
         actions: [
           IconButton(
             icon: const Icon(Icons.category_rounded, color: AppColors.textMid),
             onPressed: () => _showCategorySheet(context),
           ),
-          // Reset button
+
           IconButton(
             icon: const Icon(Icons.refresh_rounded),
             onPressed: () {
               ref.read(_scoreProvider.notifier).set(0);
+
               ref.read(_totalProvider.notifier).set(0);
+
               _nextQuestion();
             },
           ),
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-          child: Column(
-            children: [
-              // Category switcher - now handled via bottom sheet
-              // _CategorySwitcher removed - use icon in app bar
-               // AdMob Banner at the top
-         const AdBannerWidget(),
-        // Content below the banner
-              const SizedBox(height: 16),
-
-              // Score bar
-              _ScoreBar(score: score, total: total),
-
-              const SizedBox(height: 20),
-
-              if (question != null) ...[
-                // Question prompt
-                _QuestionCard(question: question, answerState: answerState),
-                const SizedBox(height: 24),
-
-                // Options grid
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 14,
-                    mainAxisSpacing: 14,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: question.options.map((opt) {
-                      return _OptionCard(
-                        option: opt,
-                        correct: question.correctAnswer,
+        top: false,
+        bottom: false,
+        child: Column(
+          children: [
+            const AdBannerWidget(),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Column(
+                  children: [
+                    _ScoreBar(score: score, total: total),
+                    const SizedBox(height: 20),
+                    if (question != null) ...[
+                      _QuestionCard(
+                        question: question,
                         answerState: answerState,
-                        selected: ref.watch(_selectedAnswerProvider),
-                        onTap: () => _onAnswer(opt),
-                      );
-                    }).toList(),
-                  ),
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      Expanded(
+                        child: GridView.count(
+                          crossAxisCount:
+                              MediaQuery.of(context).size.width > 600 ? 3 : 2,
+                          crossAxisSpacing: 14,
+                          mainAxisSpacing: 14,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: question.options.map((opt) {
+                            return _OptionCard(
+                              option: opt,
+                              correct: question.correctAnswer,
+                              answerState: answerState,
+                              selected: ref.watch(_selectedAnswerProvider),
+                              onTap: () => _onAnswer(opt),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ] else
+                      const Expanded(
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                  ],
                 ),
-              ] else
-                const Expanded(child: Center(child: CircularProgressIndicator())),
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
-// ─── Sub-widgets ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// Category Bottom Sheet
+// ─────────────────────────────────────────────────────────────────────────────
 
 class _CategoryBottomSheet extends StatelessWidget {
   final QuizCategory selected;
@@ -299,151 +441,263 @@ class _CategoryBottomSheet extends StatelessWidget {
       (QuizCategory.alphabets, '🔤', 'Alphabets', 'A to Z • 26 letters'),
       (QuizCategory.numbers, '🔢', 'Numbers', '1 to 20 • counting'),
       (QuizCategory.shapes, '🔷', 'Shapes', '8 shapes to learn'),
+      (QuizCategory.fruits, '🍎', 'Fruits', '14 fruits to learn'),
+      (QuizCategory.birds, '🦜', 'Birds', '14 birds to learn'),
     ];
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 12),
-          Container(
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Choose Category',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w900,
-              color: AppColors.textDark,
-            ),
-          ),
-          const SizedBox(height: 20),
-          ...cats.map((c) {
-            final isSelected = selected == c.$1;
-            return GestureDetector(
-              onTap: () => onSelect(c.$1),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: isSelected
-                      ? const LinearGradient(colors: [AppColors.purple, Color(0xFFEA80FC)])
-                      : null,
-                  color: isSelected ? null : Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isSelected ? Colors.transparent : Colors.grey.shade200,
-                    width: 2,
-                  ),
-                  boxShadow: isSelected
-                      ? [BoxShadow(color: AppColors.purple.withOpacity(0.3), blurRadius: 16, offset: const Offset(0, 6))]
-                      : [],
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        color: isSelected ? Colors.white.withOpacity(0.2) : AppColors.purple.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Center(child: Text(c.$2, style: const TextStyle(fontSize: 28))),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            c.$3,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                              color: isSelected ? Colors.white : AppColors.textDark,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            c.$4,
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              color: isSelected ? Colors.white70 : AppColors.textMid,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (isSelected)
-                      const Icon(Icons.check_circle_rounded, color: Colors.white, size: 28),
-                  ],
-                ),
+    return DraggableScrollableSheet(
+      initialChildSize: 0.62,
+      minChildSize: 0.45,
+      maxChildSize: 0.85,
+      expand: false,
+      builder: (context, scrollController) {
+        return Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
               ),
-            );
-          }),
-          const SizedBox(height: 32),
-        ],
-      ),
-    ).animate().slideY(begin: 0.3, curve: Curves.easeOutCubic, duration: 400.ms).fadeIn();
+              child: Column(
+                children: [
+                  const SizedBox(height: 12),
+
+                  Container(
+                    width: 42,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  const Text(
+                    'Choose Category',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.textDark,
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  Expanded(
+                    child: ListView.builder(
+                      controller: scrollController,
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        bottom: 32,
+                      ),
+                      itemCount: cats.length,
+                      itemBuilder: (context, index) {
+                        final c = cats[index];
+
+                        final isSelected = selected == c.$1;
+
+                        return GestureDetector(
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+
+                            onSelect(c.$1);
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeOutCubic,
+                            margin: const EdgeInsets.only(bottom: 14),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              gradient: isSelected
+                                  ? const LinearGradient(
+                                      colors: [
+                                        AppColors.purple,
+                                        Color(0xFFEA80FC),
+                                      ],
+                                    )
+                                  : null,
+                              color: isSelected ? null : Colors.grey.shade50,
+                              borderRadius: BorderRadius.circular(24),
+                              border: Border.all(
+                                color: isSelected
+                                    ? Colors.transparent
+                                    : Colors.grey.shade200,
+                                width: 2,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: isSelected
+                                      ? AppColors.purple.withOpacity(0.25)
+                                      : Colors.black.withOpacity(0.04),
+                                  blurRadius: 14,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 250),
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? Colors.white.withOpacity(0.2)
+                                        : AppColors.purple.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      c.$2,
+                                      style: const TextStyle(fontSize: 30),
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(width: 16),
+
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        c.$3,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w800,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : AppColors.textDark,
+                                        ),
+                                      ),
+
+                                      const SizedBox(height: 4),
+
+                                      Text(
+                                        c.$4,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          color: isSelected
+                                              ? Colors.white70
+                                              : AppColors.textMid,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                AnimatedScale(
+                                  scale: isSelected ? 1 : 0,
+                                  duration: const Duration(milliseconds: 250),
+                                  child: const Icon(
+                                    Icons.check_circle_rounded,
+                                    color: Colors.white,
+                                    size: 28,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )
+            .animate()
+            .slideY(
+              begin: 0.2,
+              end: 0,
+              duration: 350.ms,
+              curve: Curves.easeOutCubic,
+            )
+            .fadeIn();
+      },
+    );
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Score Bar
+// ─────────────────────────────────────────────────────────────────────────────
+
 class _ScoreBar extends StatelessWidget {
-  final int score, total;
+  final int score;
+  final int total;
+
   const _ScoreBar({required this.score, required this.total});
 
   @override
   Widget build(BuildContext context) {
     final pct = total == 0 ? 0.0 : score / total;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 12, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         children: [
           Row(
             children: [
               const Text('⭐', style: TextStyle(fontSize: 20)),
+
               const SizedBox(width: 8),
-              Text('$score / $total correct',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppColors.textDark)),
+
+              Text(
+                '$score / $total correct',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.textDark,
+                ),
+              ),
+
               const Spacer(),
+
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   total == 0 ? '—' : '${(pct * 100).round()}%',
-                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppColors.primary),
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
             ],
           ),
+
           const SizedBox(height: 8),
+
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: LinearProgressIndicator(
               value: pct,
               minHeight: 8,
               backgroundColor: Colors.grey.shade200,
-              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                AppColors.primary,
+              ),
             ),
           ),
         ],
@@ -451,6 +705,10 @@ class _ScoreBar extends StatelessWidget {
     );
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Question Card
+// ─────────────────────────────────────────────────────────────────────────────
 
 class _QuestionCard extends StatelessWidget {
   final QuizQuestion question;
@@ -461,10 +719,14 @@ class _QuestionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color bgColor;
+
     if (answerState == _AnswerState.correct) {
       bgColor = AppColors.primary;
-    } else if (answerState == _AnswerState.wrong) bgColor = AppColors.red;
-    else bgColor = AppColors.accent;
+    } else if (answerState == _AnswerState.wrong) {
+      bgColor = AppColors.red;
+    } else {
+      bgColor = AppColors.accent;
+    }
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -477,25 +739,59 @@ class _QuestionCard extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(28),
-        boxShadow: [BoxShadow(color: bgColor.withOpacity(0.4), blurRadius: 20, offset: const Offset(0, 8))],
+        boxShadow: [
+          BoxShadow(
+            color: bgColor.withOpacity(0.4),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         children: [
           if (answerState == _AnswerState.correct) ...[
-            const Text('🎉', style: TextStyle(fontSize: 52))
-                .animate().scale(begin: const Offset(0, 0), end: const Offset(1, 1), curve: Curves.elasticOut, duration: 400.ms),
+            const Text('🎉', style: TextStyle(fontSize: 52)).animate().scale(
+              begin: const Offset(0, 0),
+              end: const Offset(1, 1),
+              curve: Curves.elasticOut,
+              duration: 400.ms,
+            ),
+
             const SizedBox(height: 8),
-            const Text('Correct! 🌟', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white)),
+
+            const Text(
+              'Correct! 🌟',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
+              ),
+            ),
           ] else if (answerState == _AnswerState.wrong) ...[
             const Text('😅', style: TextStyle(fontSize: 52)),
+
             const SizedBox(height: 8),
-            const Text('Try again!', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white)),
+
+            const Text(
+              'Try again!',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
+              ),
+            ),
           ] else ...[
             Text(question.emoji, style: const TextStyle(fontSize: 52)),
+
             const SizedBox(height: 8),
+
             Text(
               question.prompt,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: Colors.white),
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+              ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -504,6 +800,10 @@ class _QuestionCard extends StatelessWidget {
     );
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Option Card
+// ─────────────────────────────────────────────────────────────────────────────
 
 class _OptionCard extends StatelessWidget {
   final String option;
@@ -538,8 +838,9 @@ class _OptionCard extends StatelessWidget {
       }
     }
 
-    // Calculate font size based on text length
-    final fontSize = option.length > 8 ? 22.0 : (option.length > 5 ? 26.0 : 36.0);
+    final fontSize = option.length > 8
+        ? 22.0
+        : (option.length > 5 ? 26.0 : 36.0);
 
     return GestureDetector(
       onTap: answerState == _AnswerState.none ? onTap : null,

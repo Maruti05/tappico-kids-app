@@ -7,6 +7,7 @@ import '../../core/constants/alphabet_data.dart';
 import '../../core/theme/app_theme.dart';
 import '../../services/providers.dart';
 import '../../widgets/common/tappico_app_bar.dart';
+import '../../widgets/common/ad_banner_widget.dart';
 
 class _TappedLetterNotifier extends Notifier<AlphabetItem?> {
   @override
@@ -39,18 +40,21 @@ class AlphabetsScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.bgLight,
-      appBar: const TapPicoAppBar(title: 'Alphabets'),
+      appBar: const TapPicoAppBar(
+        title: 'Alphabets',
+        gradientColors: AppColors.alphabetGradient,
+      ),
       body: Stack(
         children: [
           SafeArea(
+            top: false,
+            bottom: false,
             child: Column(
               children: [
+                const AdBannerWidget(),
                 // Progress indicator
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 8,
-                  ),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
                   child: Row(
                     children: [
                       Text(
@@ -84,7 +88,7 @@ class AlphabetsScreen extends ConsumerWidget {
                 Expanded(
                   child: GridView.builder(
                     physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,

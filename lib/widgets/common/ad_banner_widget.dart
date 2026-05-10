@@ -9,7 +9,7 @@ class AdBannerWidget extends StatefulWidget {
 
   const AdBannerWidget({
     super.key,
-    this.padding = const EdgeInsets.symmetric(vertical: 6),
+    this.padding = const EdgeInsets.symmetric(vertical: 0),
     this.showDivider = false,
   });
 
@@ -108,10 +108,9 @@ class _AdBannerWidgetState extends State<AdBannerWidget>
         if (widget.showDivider)
           Divider(
             height: 1,
-            color: Theme.of(context)
-                .colorScheme
-                .outlineVariant
-                .withOpacity(0.2),
+            color: Theme.of(
+              context,
+            ).colorScheme.outlineVariant.withOpacity(0.2),
           ),
 
         Padding(
@@ -126,10 +125,9 @@ class _AdBannerWidgetState extends State<AdBannerWidget>
         if (widget.showDivider)
           Divider(
             height: 1,
-            color: Theme.of(context)
-                .colorScheme
-                .outlineVariant
-                .withOpacity(0.2),
+            color: Theme.of(
+              context,
+            ).colorScheme.outlineVariant.withOpacity(0.2),
           ),
       ],
     );

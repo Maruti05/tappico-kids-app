@@ -13,6 +13,8 @@ class AppConstants {
   static const String alphabetsRoute = '/alphabets';
   static const String numbersRoute = '/numbers';
   static const String shapesRoute = '/shapes';
+  static const String fruitsRoute = '/fruits';
+  static const String birdsRoute = '/birds';
   static const String practiceRoute = '/practice';
   static const String settingsRoute = '/settings';
   static const String privacyPolicyRoute = '/privacy-policy';
@@ -30,6 +32,8 @@ class AppConstants {
   static const int alphabetCrossAxisCount = 4;
   static const int numberCrossAxisCount = 5;
   static const int shapeCrossAxisCount = 2;
+  static const int fruitCrossAxisCount = 1;
+  static const int birdCrossAxisCount = 1;
 
   // Animation durations
   static const Duration splashDuration = Duration(milliseconds: 3000);

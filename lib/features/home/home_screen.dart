@@ -14,12 +14,19 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      extendBodyBehindAppBar: false,
       backgroundColor: AppColors.bgLight,
-      appBar: const TapPicoAppBar(title: 'TapPico', showSettings: true),
+      appBar: const TapPicoAppBar(
+        title: 'TapPico',
+        showSettings: true,
+        gradientColors: AppColors.homeGradient,
+      ),
       body: SafeArea(
+        top: false,
+        bottom: false,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -53,7 +60,10 @@ class HomeScreen extends ConsumerWidget {
                     emoji: '🔤',
                     subtitle: 'A to Z • 26 letters',
                     gradient: AppColors.alphabetGradient,
-                    onTap: () => Navigator.pushNamed(context, AppConstants.alphabetsRoute),
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      AppConstants.alphabetsRoute,
+                    ),
                     animIndex: 0,
                   ),
                   GradientCategoryCard(
@@ -61,7 +71,8 @@ class HomeScreen extends ConsumerWidget {
                     emoji: '🔢',
                     subtitle: '1 to 20 • counting',
                     gradient: AppColors.numberGradient,
-                    onTap: () => Navigator.pushNamed(context, AppConstants.numbersRoute),
+                    onTap: () =>
+                        Navigator.pushNamed(context, AppConstants.numbersRoute),
                     animIndex: 1,
                   ),
                   GradientCategoryCard(
@@ -69,16 +80,38 @@ class HomeScreen extends ConsumerWidget {
                     emoji: '🔷',
                     subtitle: '8 shapes to learn',
                     gradient: AppColors.shapeGradient,
-                    onTap: () => Navigator.pushNamed(context, AppConstants.shapesRoute),
+                    onTap: () =>
+                        Navigator.pushNamed(context, AppConstants.shapesRoute),
                     animIndex: 2,
+                  ),
+                  GradientCategoryCard(
+                    title: 'Fruits',
+                    emoji: '🍎',
+                    subtitle: 'Tasty & Healthy',
+                    gradient: AppColors.fruitsGradient,
+                    onTap: () =>
+                        Navigator.pushNamed(context, AppConstants.fruitsRoute),
+                    animIndex: 3,
+                  ),
+                  GradientCategoryCard(
+                    title: 'Birds',
+                    emoji: '🦜',
+                    subtitle: 'Feathered Friends',
+                    gradient: AppColors.birdsGradient,
+                    onTap: () =>
+                        Navigator.pushNamed(context, AppConstants.birdsRoute),
+                    animIndex: 4,
                   ),
                   GradientCategoryCard(
                     title: 'Practice',
                     emoji: '🏆',
                     subtitle: 'Quiz yourself!',
                     gradient: AppColors.practiceGradient,
-                    onTap: () => Navigator.pushNamed(context, AppConstants.practiceRoute),
-                    animIndex: 3,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      AppConstants.practiceRoute,
+                    ),
+                    animIndex: 5,
                   ),
                 ],
               ),
@@ -104,8 +137,16 @@ class _WelcomeBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hour = DateTime.now().hour;
-    final greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-    final emoji = hour < 12 ? '🌅' : hour < 17 ? '☀️' : '🌙';
+    final greeting = hour < 12
+        ? 'Good morning'
+        : hour < 17
+        ? 'Good afternoon'
+        : 'Good evening';
+    final emoji = hour < 12
+        ? '🌅'
+        : hour < 17
+        ? '☀️'
+        : '🌙';
 
     return Container(
       width: double.infinity,
@@ -163,8 +204,9 @@ class _FunFactsStrip extends StatelessWidget {
   final List<_FactItem> facts = const [
     _FactItem('🌟', '26 Letters', 'A to Z alphabet'),
     _FactItem('🔢', '20 Numbers', 'Count with fun'),
+    _FactItem('🍎', '15 Fruits', 'Healthy & sweet'),
+    _FactItem('🦜', '14 Birds', 'Soaring high'),
     _FactItem('🔷', '8 Shapes', 'All around us'),
-    _FactItem('🏆', 'Quizzes', 'Test yourself'),
   ];
 
   @override
@@ -176,38 +218,40 @@ class _FunFactsStrip extends StatelessWidget {
         const SizedBox(height: 12),
         Row(
           children: facts
-              .map((f) => Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.06),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Text(f.emoji, style: const TextStyle(fontSize: 22)),
-                          const SizedBox(height: 4),
-                          Text(
-                            f.label,
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.textDark,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
+              .map(
+                (f) => Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(18),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ))
+                    child: Column(
+                      children: [
+                        Text(f.emoji, style: const TextStyle(fontSize: 22)),
+                        const SizedBox(height: 4),
+                        Text(
+                          f.label,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.textDark,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
               .toList(),
         ),
       ],

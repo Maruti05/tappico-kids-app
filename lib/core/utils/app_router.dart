@@ -7,6 +7,8 @@ import '../../features/home/home_screen.dart';
 import '../../features/alphabets/alphabets_screen.dart';
 import '../../features/numbers/numbers_screen.dart';
 import '../../features/shapes/shapes_screen.dart';
+import '../../features/fruits/fruits_screen.dart';
+import '../../features/birds/birds_screen.dart';
 import '../../features/practice/practice_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/settings/privacy_policy_screen.dart';
@@ -28,6 +30,11 @@ class AppRouter {
 
       case AppConstants.shapesRoute:
         return _route(const ShapesScreen(), settings);
+
+      case AppConstants.fruitsRoute:
+        return _route(const FruitsScreen(), settings);
+      case AppConstants.birdsRoute:
+        return _route(const BirdsScreen(), settings);
 
       case AppConstants.practiceRoute:
         return _route(const PracticeScreen(), settings);

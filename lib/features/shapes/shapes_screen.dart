@@ -8,6 +8,7 @@ import '../../core/constants/number_data.dart';
 import '../../core/theme/app_theme.dart';
 import '../../services/providers.dart';
 import '../../widgets/common/tappico_app_bar.dart';
+import '../../widgets/common/ad_banner_widget.dart';
 
 class _TappedShapeNotifier extends Notifier<ShapeItem?> {
   @override
@@ -50,17 +51,20 @@ class ShapesScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.bgLight,
-      appBar: const TapPicoAppBar(title: 'Shapes'),
+      appBar: const TapPicoAppBar(
+        title: 'Shapes',
+        gradientColors: AppColors.shapeGradient,
+      ),
       body: Stack(
         children: [
           SafeArea(
+            top: false,
+            bottom: false,
             child: Column(
               children: [
+                const AdBannerWidget(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 8,
-                  ),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
                   child: Row(
                     children: [
                       Text(
@@ -92,7 +96,7 @@ class ShapesScreen extends ConsumerWidget {
                 Expanded(
                   child: GridView.builder(
                     physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -192,10 +196,15 @@ class _ShapeCardState extends ConsumerState<_ShapeCard> {
                 : null,
             color: widget.isActive ? null : Colors.white,
             borderRadius: BorderRadius.circular(28),
-            border: Border.all(color: widget.colors[0], width: widget.isActive ? 0 : 3),
+            border: Border.all(
+              color: widget.colors[0],
+              width: widget.isActive ? 0 : 3,
+            ),
             boxShadow: [
               BoxShadow(
-                color: widget.colors[0].withOpacity(widget.isActive ? 0.5 : 0.18),
+                color: widget.colors[0].withOpacity(
+                  widget.isActive ? 0.5 : 0.18,
+                ),
                 blurRadius: widget.isActive ? 24 : 10,
                 offset: const Offset(0, 6),
               ),
