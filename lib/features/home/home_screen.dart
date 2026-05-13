@@ -4,6 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/constants/alphabet_data.dart';
+import '../../core/constants/number_data.dart';
+import '../../core/constants/fruit_data.dart';
+import '../../core/constants/bird_data.dart';
+import '../../core/constants/animal_data.dart';
+import '../../core/constants/color_data.dart';
+import '../../core/constants/vehicle_data.dart';
+import '../../core/constants/body_part_data.dart';
+import '../../core/constants/vegetable_data.dart';
 import '../../core/theme/app_theme.dart';
 import '../../widgets/common/gradient_card.dart';
 import '../../widgets/common/tappico_app_bar.dart';
@@ -278,15 +287,19 @@ class _WelcomeBanner extends StatelessWidget {
 }
 
 class _FunFactsStrip extends StatelessWidget {
-  final List<_FactItem> facts = const [
-    _FactItem('🌟', '26 Letters', 'A to Z alphabet'),
-    _FactItem('🔢', '20 Numbers', 'Count with fun'),
-    _FactItem('🍎', '15 Fruits', 'Healthy & sweet'),
-    _FactItem('🦜', '14 Birds', 'Soaring high'),
-    _FactItem('🏠', '16 Domestic', 'Friendly pets'),
-    _FactItem('🌿', '31 Wild', 'Safari animals'),
-    _FactItem('🐛', '11 Insects', 'Bugs & critters'),
-    _FactItem('🔷', '8 Shapes', 'All around us'),
+  List<_FactItem> get facts => [
+    _FactItem('🌟', '${alphabetData.length} Letters', 'A to Z alphabet'),
+    _FactItem('🔢', '${numberData.length} Numbers', 'Count with fun'),
+    _FactItem('🍎', '${fruitData.length} Fruits', 'Healthy & sweet'),
+    _FactItem('🦜', '${birdData.length} Birds', 'Soaring high'),
+    _FactItem('🏠', '${domesticAnimalData.length} Domestic', 'Friendly pets'),
+    _FactItem('🌿', '${wildAnimalData.length} Wild', 'Safari animals'),
+    _FactItem('🐛', '${insectAnimalData.length} Insects', 'Bugs & critters'),
+    _FactItem('🔷', '${shapeData.length} Shapes', 'All around us'),
+    _FactItem('🌈', '${colorData.length} Colors', 'Rainbow & bright'),
+    _FactItem('🚗', '${vehicleData.length} Vehicles', 'Vroom vroom!'),
+    _FactItem('🧍', '${bodyPartData.length} Body Parts', 'Head to toe'),
+    _FactItem('🥦', '${vegetableData.length} Veggies', 'Healthy eats'),
   ];
 
   @override
