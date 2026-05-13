@@ -64,7 +64,7 @@ class InsectsScreen extends ConsumerWidget {
                         const SectionHeader(
                           emoji: '🐛',
                           title: 'Insects',
-                          countLabel: '17 insects',
+                          countLabel: '11 insects',
                         ),
                         const SizedBox(height: 8),
                         GridView.builder(

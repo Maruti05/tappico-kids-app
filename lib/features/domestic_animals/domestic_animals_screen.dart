@@ -64,7 +64,7 @@ class DomesticAnimalsScreen extends ConsumerWidget {
                         const SectionHeader(
                           emoji: '🏠',
                           title: 'Domestic Animals',
-                          countLabel: '24 animals',
+                          countLabel: '16 animals',
                         ),
                         const SizedBox(height: 8),
                         GridView.builder(

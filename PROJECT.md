@@ -133,9 +133,9 @@ Category gradients: alphabetGradient, numberGradient, shapeGradient, fruitsGradi
 | Fruits | 15 | `fruit_data.dart` | `FruitsScreen` |
 | Birds | 14 | `bird_data.dart` | `BirdsScreen` |
 | Animals (combined) | — | `animal_data.dart` | `AnimalsScreen` |
-| Domestic Animals | 24 | `animal_data.dart` (domesticAnimalData) | `DomesticAnimalsScreen` |
-| Wild Animals | 70+ | `animal_data.dart` (wildAnimalData) | `WildAnimalsScreen` |
-| Insects | 17 | `animal_data.dart` (insectAnimalData) | `InsectsScreen` |
+| Domestic Animals | 16 | `animal_data.dart` (domesticAnimalData) | `DomesticAnimalsScreen` |
+| Wild Animals | 31 | `animal_data.dart` (wildAnimalData) | `WildAnimalsScreen` |
+| Insects | 11 | `animal_data.dart` (insectAnimalData) | `InsectsScreen` |
 | Colors | 14 | `color_data.dart` | `ColorsScreen` |
 | Vehicles | 20 | `vehicle_data.dart` | `VehiclesScreen` |
 | Body Parts | 20 | `body_part_data.dart` | `BodyPartsScreen` |

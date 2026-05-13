@@ -64,7 +64,7 @@ class WildAnimalsScreen extends ConsumerWidget {
                         const SectionHeader(
                           emoji: '🌿',
                           title: 'Wild Animals',
-                          countLabel: '70+ animals',
+                          countLabel: '31 animals',
                         ),
                         const SizedBox(height: 8),
                         GridView.builder(

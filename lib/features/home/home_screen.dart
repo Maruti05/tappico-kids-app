@@ -105,7 +105,7 @@ class HomeScreen extends ConsumerWidget {
                   GradientCategoryCard(
                     title: 'Domestic',
                     emoji: '🏠',
-                    subtitle: 'Friendly pets',
+                    subtitle: '16 friendly pets',
                     gradient: AppColors.domesticGradient,
                     onTap: () => Navigator.pushNamed(
                       context,
@@ -116,7 +116,7 @@ class HomeScreen extends ConsumerWidget {
                   GradientCategoryCard(
                     title: 'Wild',
                     emoji: '🌿',
-                    subtitle: 'Jungle & safari',
+                    subtitle: '31 wild animals',
                     gradient: AppColors.wildGradient,
                     onTap: () => Navigator.pushNamed(
                       context,
@@ -283,9 +283,9 @@ class _FunFactsStrip extends StatelessWidget {
     _FactItem('🔢', '20 Numbers', 'Count with fun'),
     _FactItem('🍎', '15 Fruits', 'Healthy & sweet'),
     _FactItem('🦜', '14 Birds', 'Soaring high'),
-    _FactItem('🏠', '24 Domestic', 'Friendly pets'),
-    _FactItem('🌿', '70+ Wild', 'Safari animals'),
-    _FactItem('🐛', '17 Insects', 'Bugs & critters'),
+    _FactItem('🏠', '16 Domestic', 'Friendly pets'),
+    _FactItem('🌿', '31 Wild', 'Safari animals'),
+    _FactItem('🐛', '11 Insects', 'Bugs & critters'),
     _FactItem('🔷', '8 Shapes', 'All around us'),
   ];
 
