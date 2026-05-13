@@ -15,6 +15,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final soundEnabled = ref.watch(soundProvider);
     final speechRate = ref.watch(speechRateProvider);
+    final eyeProtectorOn = ref.watch(eyeProtectorProvider);
 
     return Scaffold(
       backgroundColor: AppColors.bgLight,
@@ -175,11 +176,37 @@ class SettingsScreen extends ConsumerWidget {
             ),
 
             const SizedBox(height: 24),
-            const _SectionTitle('About'),
+            const _SectionTitle('Visual Settings'),
             const SizedBox(height: 12),
 
             _SettingsCard(
               animIndex: 1,
+              child: _SettingRow(
+                icon: eyeProtectorOn
+                    ? Icons.remove_red_eye_rounded
+                    : Icons.visibility_off_rounded,
+                iconColor: eyeProtectorOn
+                    ? AppColors.secondary
+                    : AppColors.textLight,
+                title: 'Eye Protector',
+                subtitle: eyeProtectorOn
+                    ? 'On — blue light filter active'
+                    : 'Off',
+                trailing: Switch.adaptive(
+                  value: eyeProtectorOn,
+                  onChanged: (v) =>
+                      ref.read(eyeProtectorProvider.notifier).set(v),
+                  activeColor: AppColors.secondary,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+            const _SectionTitle('About'),
+            const SizedBox(height: 12),
+
+            _SettingsCard(
+              animIndex: 2,
               child: Column(
                 children: [
                   const _SettingRow(

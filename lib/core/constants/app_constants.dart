@@ -30,6 +30,7 @@ class AppConstants {
   // Prefs keys
   static const String soundEnabledKey = 'sound_enabled';
   static const String voiceSpeedKey = 'voice_speed';
+  static const String eyeProtectorKey = 'eye_protector';
 
   // TTS
   static const double defaultVoiceSpeed = 0.5;

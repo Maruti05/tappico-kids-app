@@ -1,6 +1,8 @@
 // lib/services/providers.dart
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../core/constants/app_constants.dart';
 import 'tts_service.dart';
 
 // TTS service provider
@@ -62,3 +64,31 @@ class AutoPlayNotifier extends Notifier<bool> {
   void toggle() => state = !state;
 }
 final autoPlayProvider = NotifierProvider<AutoPlayNotifier, bool>(AutoPlayNotifier.new);
+
+// Eye protector (blue light filter)
+class EyeProtectorNotifier extends Notifier<bool> {
+  @override
+  bool build() {
+    _load();
+    return false;
+  }
+
+  Future<void> _load() async {
+    final prefs = await SharedPreferences.getInstance();
+    state = prefs.getBool(AppConstants.eyeProtectorKey) ?? false;
+  }
+
+  Future<void> toggle() async {
+    final newValue = !state;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(AppConstants.eyeProtectorKey, newValue);
+    state = newValue;
+  }
+
+  Future<void> set(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(AppConstants.eyeProtectorKey, value);
+    state = value;
+  }
+}
+final eyeProtectorProvider = NotifierProvider<EyeProtectorNotifier, bool>(EyeProtectorNotifier.new);

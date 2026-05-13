@@ -141,6 +141,10 @@ Category gradients: alphabetGradient, numberGradient, shapeGradient, fruitsGradi
 | Body Parts | 20 | `body_part_data.dart` | `BodyPartsScreen` |
 | Vegetables | 13 | `vegetable_data.dart` | `VegetablesScreen` |
 
+## Settings
+- **Audio Settings:** Sound effects toggle, voice speed slider with presets (Slow/Normal/Fast)
+- **Visual Settings:** Eye Protector toggle — applies a warm amber filter (`BlendMode.softLight`) across the entire app to reduce blue light and protect children's eyes. Persisted via SharedPreferences.
+
 ## Recent Changes (May 2026)
 - **Extracted insects** from `wildAnimalData` into separate `insectAnimalData` list
 - **Added 3 new screens:** DomesticAnimalsScreen, WildAnimalsScreen, InsectsScreen

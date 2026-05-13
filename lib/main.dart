@@ -7,6 +7,7 @@ import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/app_router.dart';
 import 'services/admob_service.dart';
+import 'services/providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,12 +37,22 @@ class TapPicoApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
-      title: AppConstants.appName,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme,
-      initialRoute: AppConstants.splashRoute,
-      onGenerateRoute: AppRouter.generateRoute,
+    final eyeProtectorOn = ref.watch(eyeProtectorProvider);
+
+    return ColorFiltered(
+      colorFilter: eyeProtectorOn
+          ? const ColorFilter.mode(
+              Color(0x33FF8C00),
+              BlendMode.softLight,
+            )
+          : const ColorFilter.mode(Colors.transparent, BlendMode.dst),
+      child: MaterialApp(
+        title: AppConstants.appName,
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.theme,
+        initialRoute: AppConstants.splashRoute,
+        onGenerateRoute: AppRouter.generateRoute,
+      ),
     );
   }
 }
