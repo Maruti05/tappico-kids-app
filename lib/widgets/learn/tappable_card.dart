@@ -132,13 +132,17 @@ class TappableCardRow extends StatelessWidget {
           Text(emoji, style: const TextStyle(fontSize: 56)),
           const SizedBox(width: 16),
           Expanded(
-            child: Text(
-              name,
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w900,
-                color: isActive ? Colors.white : color,
-                height: 1,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w900,
+                  color: isActive ? Colors.white : color,
+                  height: 1,
+                ),
               ),
             ),
           ),

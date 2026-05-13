@@ -117,12 +117,15 @@ class ShapesScreen extends ConsumerWidget {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text(
-                                item.name,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                  color: active ? Colors.white : AppColors.textDark,
+                              FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  item.name,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800,
+                                    color: active ? Colors.white : AppColors.textDark,
+                                  ),
                                 ),
                               ),
                             ],
