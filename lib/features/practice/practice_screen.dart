@@ -11,6 +11,7 @@ import 'package:tappico/widgets/common/ad_banner_widget.dart';
 import '../../core/constants/alphabet_data.dart';
 import '../../core/constants/fruit_data.dart';
 import '../../core/constants/bird_data.dart';
+import '../../core/constants/animal_data.dart';
 import '../../core/constants/number_data.dart';
 import '../../core/theme/app_theme.dart';
 import '../../services/providers.dart';
@@ -20,7 +21,17 @@ import '../../widgets/common/tappico_app_bar.dart';
 // Quiz Models
 // ─────────────────────────────────────────────────────────────────────────────
 
-enum QuizCategory { alphabets, numbers, shapes, fruits, birds }
+enum QuizCategory {
+  alphabets,
+  numbers,
+  shapes,
+  fruits,
+  birds,
+  animals,
+  domesticAnimals,
+  wildAnimals,
+  insects,
+}
 
 class QuizQuestion {
   final String prompt;
@@ -223,6 +234,90 @@ QuizQuestion _generateBirdQuestion() {
   );
 }
 
+QuizQuestion _generateAnimalQuestion() {
+  final rng = Random();
+
+  final correct = animalData[rng.nextInt(animalData.length)];
+
+  final wrongs = (animalData.toList()..shuffle())
+      .where((e) => e.name != correct.name)
+      .take(3)
+      .map((e) => e.name)
+      .toList();
+
+  final opts = [...wrongs, correct.name]..shuffle();
+
+  return QuizQuestion(
+    prompt: 'Tap the animal 👇',
+    correctAnswer: correct.name,
+    options: opts,
+    emoji: correct.emoji,
+  );
+}
+
+QuizQuestion _generateDomesticAnimalQuestion() {
+  final rng = Random();
+
+  final correct = domesticAnimalData[rng.nextInt(domesticAnimalData.length)];
+
+  final wrongs = (domesticAnimalData.toList()..shuffle())
+      .where((e) => e.name != correct.name)
+      .take(3)
+      .map((e) => e.name)
+      .toList();
+
+  final opts = [...wrongs, correct.name]..shuffle();
+
+  return QuizQuestion(
+    prompt: 'Tap the domestic animal 👇',
+    correctAnswer: correct.name,
+    options: opts,
+    emoji: correct.emoji,
+  );
+}
+
+QuizQuestion _generateWildAnimalQuestion() {
+  final rng = Random();
+
+  final correct = wildAnimalData[rng.nextInt(wildAnimalData.length)];
+
+  final wrongs = (wildAnimalData.toList()..shuffle())
+      .where((e) => e.name != correct.name)
+      .take(3)
+      .map((e) => e.name)
+      .toList();
+
+  final opts = [...wrongs, correct.name]..shuffle();
+
+  return QuizQuestion(
+    prompt: 'Tap the wild animal 👇',
+    correctAnswer: correct.name,
+    options: opts,
+    emoji: correct.emoji,
+  );
+}
+
+QuizQuestion _generateInsectQuestion() {
+  final rng = Random();
+
+  final correct = insectAnimalData[rng.nextInt(insectAnimalData.length)];
+
+  final wrongs = (insectAnimalData.toList()..shuffle())
+      .where((e) => e.name != correct.name)
+      .take(3)
+      .map((e) => e.name)
+      .toList();
+
+  final opts = [...wrongs, correct.name]..shuffle();
+
+  return QuizQuestion(
+    prompt: 'Tap the insect 👇',
+    correctAnswer: correct.name,
+    options: opts,
+    emoji: correct.emoji,
+  );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Practice Screen
 // ─────────────────────────────────────────────────────────────────────────────
@@ -290,6 +385,22 @@ class _PracticeScreenState extends ConsumerState<PracticeScreen> {
 
       case QuizCategory.birds:
         q = _generateBirdQuestion();
+        break;
+
+      case QuizCategory.animals:
+        q = _generateAnimalQuestion();
+        break;
+
+      case QuizCategory.domesticAnimals:
+        q = _generateDomesticAnimalQuestion();
+        break;
+
+      case QuizCategory.wildAnimals:
+        q = _generateWildAnimalQuestion();
+        break;
+
+      case QuizCategory.insects:
+        q = _generateInsectQuestion();
         break;
     }
 
@@ -443,6 +554,10 @@ class _CategoryBottomSheet extends StatelessWidget {
       (QuizCategory.shapes, '🔷', 'Shapes', '8 shapes to learn'),
       (QuizCategory.fruits, '🍎', 'Fruits', '14 fruits to learn'),
       (QuizCategory.birds, '🦜', 'Birds', '14 birds to learn'),
+      (QuizCategory.animals, '🐾', 'Animals', '80+ animals to learn'),
+      (QuizCategory.domesticAnimals, '🏠', 'Domestic', '24 pets to learn'),
+      (QuizCategory.wildAnimals, '🌿', 'Wild', '70+ wild animals'),
+      (QuizCategory.insects, '🐛', 'Insects', '17 bugs & critters'),
     ];
 
     return DraggableScrollableSheet(

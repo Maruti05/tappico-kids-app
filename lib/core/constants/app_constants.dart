@@ -15,6 +15,10 @@ class AppConstants {
   static const String shapesRoute = '/shapes';
   static const String fruitsRoute = '/fruits';
   static const String birdsRoute = '/birds';
+  static const String animalsRoute = '/animals';
+  static const String domesticAnimalsRoute = '/domestic-animals';
+  static const String wildAnimalsRoute = '/wild-animals';
+  static const String insectsRoute = '/insects';
   static const String practiceRoute = '/practice';
   static const String settingsRoute = '/settings';
   static const String privacyPolicyRoute = '/privacy-policy';
@@ -34,6 +38,7 @@ class AppConstants {
   static const int shapeCrossAxisCount = 2;
   static const int fruitCrossAxisCount = 1;
   static const int birdCrossAxisCount = 1;
+  static const int animalCrossAxisCount = 1;
 
   // Animation durations
   static const Duration splashDuration = Duration(milliseconds: 3000);

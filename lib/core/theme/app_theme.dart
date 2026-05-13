@@ -55,6 +55,22 @@ class AppColors {
     Color(0xFF00E5FF),
     Color(0xFF18FFFF),
   ];
+  static const List<Color> animalsGradient = [
+    Color(0xFFFF6F00),
+    Color(0xFFFFB74D),
+  ];
+  static const List<Color> domesticGradient = [
+    Color(0xFFFF6D00),
+    Color(0xFFFFB74D),
+  ];
+  static const List<Color> wildGradient = [
+    Color(0xFF2E7D32),
+    Color(0xFF66BB6A),
+  ];
+  static const List<Color> insectGradient = [
+    Color(0xFF7B1FA2),
+    Color(0xFFCE93D8),
+  ];
 
   static const List<Color> homeGradient = [
     Color(0xFF00C853),

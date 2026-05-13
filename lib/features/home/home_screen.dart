@@ -103,6 +103,39 @@ class HomeScreen extends ConsumerWidget {
                     animIndex: 4,
                   ),
                   GradientCategoryCard(
+                    title: 'Domestic',
+                    emoji: '🏠',
+                    subtitle: 'Friendly pets',
+                    gradient: AppColors.domesticGradient,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      AppConstants.domesticAnimalsRoute,
+                    ),
+                    animIndex: 5,
+                  ),
+                  GradientCategoryCard(
+                    title: 'Wild',
+                    emoji: '🌿',
+                    subtitle: 'Jungle & safari',
+                    gradient: AppColors.wildGradient,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      AppConstants.wildAnimalsRoute,
+                    ),
+                    animIndex: 6,
+                  ),
+                  GradientCategoryCard(
+                    title: 'Insects',
+                    emoji: '🐛',
+                    subtitle: 'Bugs & critters',
+                    gradient: AppColors.insectGradient,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      AppConstants.insectsRoute,
+                    ),
+                    animIndex: 7,
+                  ),
+                  GradientCategoryCard(
                     title: 'Practice',
                     emoji: '🏆',
                     subtitle: 'Quiz yourself!',
@@ -111,7 +144,7 @@ class HomeScreen extends ConsumerWidget {
                       context,
                       AppConstants.practiceRoute,
                     ),
-                    animIndex: 5,
+                    animIndex: 8,
                   ),
                 ],
               ),
@@ -206,6 +239,9 @@ class _FunFactsStrip extends StatelessWidget {
     _FactItem('🔢', '20 Numbers', 'Count with fun'),
     _FactItem('🍎', '15 Fruits', 'Healthy & sweet'),
     _FactItem('🦜', '14 Birds', 'Soaring high'),
+    _FactItem('🏠', '24 Domestic', 'Friendly pets'),
+    _FactItem('🌿', '70+ Wild', 'Safari animals'),
+    _FactItem('🐛', '17 Insects', 'Bugs & critters'),
     _FactItem('🔷', '8 Shapes', 'All around us'),
   ];
 

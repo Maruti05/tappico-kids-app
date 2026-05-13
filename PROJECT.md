@@ -1,0 +1,131 @@
+# TapPico — Project Context
+
+## Overview
+Kids ABC & 123 Learning App. Package: `com.vedica.labs.ind.app.tappico` (v0.1.1+2).
+
+## Project Structure
+
+```
+lib/
+├── core/
+│   ├── constants/
+│   │   ├── app_constants.dart      Routes, prefs keys, TTS speeds, grid counts
+│   │   ├── alphabet_data.dart      26 A-Z items (AlphabetItem)
+│   │   ├── number_data.dart        20 items (NumberItem)
+│   │   ├── fruit_data.dart         15 fruits (FruitItem)
+│   │   ├── bird_data.dart          14 birds (BirdItem)
+│   │   └── animal_data.dart        AnimalItem model + domestic(24)/wild(70+)/insect(17) lists
+│   ├── theme/
+│   │   └── app_theme.dart          AppColors (gradients, palette), AppTheme (Material3, Nunito)
+│   └── utils/
+│       └── app_router.dart         Named routes with fade+scale transitions
+├── features/
+│   ├── splash/splash_screen.dart
+│   ├── home/home_screen.dart       2-column grid of GradientCategoryCards
+│   ├── alphabets/alphabets_screen.dart
+│   ├── numbers/numbers_screen.dart
+│   ├── shapes/shapes_screen.dart
+│   ├── fruits/fruits_screen.dart
+│   ├── birds/birds_screen.dart
+│   ├── domestic_animals/domestic_animals_screen.dart
+│   ├── wild_animals/wild_animals_screen.dart
+│   ├── insects/insects_screen.dart
+│   ├── practice/practice_screen.dart   Quiz engine (~998 lines)
+│   └── settings/
+│       ├── settings_screen.dart
+│       └── privacy_policy_screen.dart
+├── services/
+│   ├── providers.dart              Global riverpod providers
+│   ├── tts_service.dart            TTS singleton
+│   └── admob_service.dart          AdMob singleton
+├── widgets/common/
+│   ├── tappico_app_bar.dart         Shared gradient app bar
+│   ├── tap_card.dart                Pressable card with scale animation
+│   ├── gradient_card.dart           Home screen category card
+│   └── ad_banner_widget.dart        Lifecycle-aware AdMob banner
+└── main.dart
+```
+
+## Routes
+
+| Route | Screen |
+|---|---|
+| `/` → `splashRoute` | SplashScreen |
+| `/home` → `homeRoute` | HomeScreen |
+| `/alphabets` → `alphabetsRoute` | AlphabetsScreen |
+| `/numbers` → `numbersRoute` | NumbersScreen |
+| `/shapes` → `shapesRoute` | ShapesScreen |
+| `/fruits` → `fruitsRoute` | FruitsScreen |
+| `/birds` → `birdsRoute` | BirdsScreen |
+| `/animals` → `animalsRoute` | AnimalsScreen (combined, kept for backward compat) |
+| `/domestic-animals` → `domesticAnimalsRoute` | DomesticAnimalsScreen |
+| `/wild-animals` → `wildAnimalsRoute` | WildAnimalsScreen |
+| `/insects` → `insectsRoute` | InsectsScreen |
+| `/practice` → `practiceRoute` | PracticeScreen |
+| `/settings` → `settingsRoute` | SettingsScreen |
+| `/privacy-policy` → `privacyPolicyRoute` | PrivacyPolicyScreen |
+
+Transition: Fade + Scale (0.96→1.0, easeOutCubic, 280ms/200ms).
+
+## State Management (Riverpod)
+
+### Global providers (`lib/services/providers.dart`)
+- `ttsServiceProvider` — `Provider<TtsService>`
+- `soundProvider` — `NotifierProvider<bool>` (persisted)
+- `speechRateProvider` — `NotifierProvider<double>` (persisted)
+- `tappedItemProvider` — `NotifierProvider<String?>`
+- `autoPlayProvider` — `NotifierProvider<bool>`
+
+### Per-screen providers
+Each category screen defines private `NotifierProvider`s for tap state + position.
+
+## TTS Service (`lib/services/tts_service.dart`)
+Singleton (factory pattern). Queues speech sequentially. Methods:
+- `speak(String)`, `speakLetterWithWord(l, w)`, `speakNumber(int)`, `speakSequence(List<String>)`
+- `stop()`, `setSoundEnabled(bool)`, `setSpeechRate(double)`, `dispose()`
+- Voice: en-US, prefers neural/female/child. Pitch: 1.2. Formatting: single chars get ellipsis.
+
+## AdMob Service (`lib/services/admob_service.dart`)
+Singleton. Test ad unit IDs. Adaptive banners. Retry (3x, exponential backoff). Connectivity check.
+
+## Shared App Bar (`TapPicoAppBar`)
+Parameters: title, showSettings, actions, showBackButton, leading, gradientColors.
+Height: 82px. Rounded-bottom gradient. Glass-style buttons. Sound toggle + settings gear built-in.
+
+## Data Models (all in `lib/core/constants/`)
+- `AlphabetItem`: letter, word, emoji, ttsPhrase
+- `NumberItem`: number, word, emoji, ttsPhrase
+- `FruitItem`: name, emoji, ttsPhrase
+- `BirdItem`: name, emoji, ttsPhrase
+- `AnimalItem`: name, emoji, ttsPhrase, category (enum: domestic/wild/insect)
+  - `domesticAnimalData` — 24 items
+  - `wildAnimalData` — 70+ items
+  - `insectAnimalData` — 17 items
+  - `animalData` — combined list of all three
+
+## Practice Screen (`QuizCategory` enum)
+Categories: alphabets, numbers, shapes, fruits, birds, animals, domesticAnimals, wildAnimals, insects.
+Each generates questions via `_generateXxxQuestion()` — picks random correct + 3 wrongs, shuffles.
+
+## Theme (`AppColors`)
+Background: `#F8F4FF`. Text: `#1A1A2E` (dark), `#444466` (mid), `#888AAA` (light).
+Category gradients: alphabetGradient, numberGradient, shapeGradient, fruitsGradient, birdsGradient, animalsGradient, domesticGradient, wildGradient, insectGradient, practiceGradient, settingsGradient, homeGradient.
+
+## Conventions
+- **Async:** `async/await`, `Completer` for one-shot coordination, `Future.delayed` for delays
+- **Widgets:** `ConsumerWidget` (stateless) or `ConsumerStatefulWidget` (stateful)
+- **Navigation:** `Navigator.pushNamed()` / `pushReplacementNamed()`
+- **Animations:** `flutter_animate` for entrance FX; `AnimationController` for custom loops
+- **Haptics:** `HapticFeedback.lightImpact()` on tap, `selectionClick()` on toggle
+- **Ads:** `AdBannerWidget` at bottom of category screens; gracefully hides on failure
+- **State:** Riverpod exclusively. Private per-screen `NotifierProvider`s for local UI state.
+- **Persistence:** `SharedPreferences` for sound toggle + speech rate
+- **Data:** `const` lists of model classes with `const` constructors
+
+## Recent Changes (May 2026)
+- **Extracted insects** from `wildAnimalData` into separate `insectAnimalData` list
+- **Added 3 new screens:** DomesticAnimalsScreen, WildAnimalsScreen, InsectsScreen
+- **Updated homepage:** Replaced single "Animals" card with 3 separate cards (Domestic, Wild, Insects)
+- **Updated practice screen:** Added 3 new `QuizCategory` values with dedicated question generators
+- **Added gradients:** `domesticGradient`, `wildGradient`, `insectGradient` in AppColors
+- **Updated FunFactsStrip** with broken-down stats for each category

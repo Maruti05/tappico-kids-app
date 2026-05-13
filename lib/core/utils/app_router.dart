@@ -9,6 +9,9 @@ import '../../features/numbers/numbers_screen.dart';
 import '../../features/shapes/shapes_screen.dart';
 import '../../features/fruits/fruits_screen.dart';
 import '../../features/birds/birds_screen.dart';
+import '../../features/domestic_animals/domestic_animals_screen.dart';
+import '../../features/wild_animals/wild_animals_screen.dart';
+import '../../features/insects/insects_screen.dart';
 import '../../features/practice/practice_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/settings/privacy_policy_screen.dart';
@@ -36,6 +39,15 @@ class AppRouter {
       case AppConstants.birdsRoute:
         return _route(const BirdsScreen(), settings);
 
+      case AppConstants.domesticAnimalsRoute:
+        return _route(const DomesticAnimalsScreen(), settings);
+
+      case AppConstants.wildAnimalsRoute:
+        return _route(const WildAnimalsScreen(), settings);
+
+      case AppConstants.insectsRoute:
+        return _route(const InsectsScreen(), settings);
+
       case AppConstants.practiceRoute:
         return _route(const PracticeScreen(), settings);
 
@@ -60,8 +72,10 @@ class AppRouter {
     return PageRouteBuilder(
       settings: settings, // ✅ IMPORTANT
       pageBuilder: (_, animation, _) {
-        final curvedAnim =
-            CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+        final curvedAnim = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+        );
 
         return FadeTransition(
           opacity: animation,
