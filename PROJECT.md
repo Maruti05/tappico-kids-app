@@ -1,5 +1,7 @@
 # TapPico — Project Context
 
+> **LLM INSTRUCTION:** After every coding session where you modify files, add files, or change project structure, you MUST update this file to reflect the new state. Keep the "Recent Changes" section appended with a dated entry summarizing what was done. This ensures future sessions can read one file instead of re-exploring the entire codebase.
+
 ## Overview
 Kids ABC & 123 Learning App. Package: `com.vedica.labs.ind.app.tappico` (v0.1.1+2).
 
