@@ -131,3 +131,4 @@ Category gradients: alphabetGradient, numberGradient, shapeGradient, fruitsGradi
 - **Updated practice screen:** Added 3 new `QuizCategory` values with dedicated question generators
 - **Added gradients:** `domesticGradient`, `wildGradient`, `insectGradient` in AppColors
 - **Updated FunFactsStrip** with broken-down stats for each category
+- **Fixed Quick Stats overflow:** Changed `Row` to `Wrap` with `LayoutBuilder` for responsive auto-wrapping with equal gaps

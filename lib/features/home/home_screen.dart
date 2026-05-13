@@ -252,43 +252,55 @@ class _FunFactsStrip extends StatelessWidget {
       children: [
         Text('Quick Stats', style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 12),
-        Row(
-          children: facts
-              .map(
-                (f) => Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(18),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Text(f.emoji, style: const TextStyle(fontSize: 22)),
-                        const SizedBox(height: 4),
-                        Text(
-                          f.label,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.textDark,
+        LayoutBuilder(
+          builder: (context, constraints) {
+            const double spacing = 8;
+            const double minItemWidth = 82;
+            final maxWidth = constraints.maxWidth;
+            final crossAxisCount = ((maxWidth + spacing) / (minItemWidth + spacing))
+                .floor()
+                .clamp(1, facts.length);
+            final itemWidth = (maxWidth - spacing * (crossAxisCount - 1)) / crossAxisCount;
+
+            return Wrap(
+              spacing: spacing,
+              runSpacing: spacing,
+              children: facts
+                  .map(
+                    (f) => Container(
+                      width: itemWidth,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.06),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Text(f.emoji, style: const TextStyle(fontSize: 22)),
+                          const SizedBox(height: 4),
+                          Text(
+                            f.label,
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textDark,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-              )
-              .toList(),
+                  )
+                  .toList(),
+            );
+          },
         ),
       ],
     );
