@@ -136,7 +136,7 @@ Category gradients: alphabetGradient, numberGradient, shapeGradient, fruitsGradi
 | Domestic Animals | 16 | `animal_data.dart` (domesticAnimalData) | `DomesticAnimalsScreen` |
 | Wild Animals | 31 | `animal_data.dart` (wildAnimalData) | `WildAnimalsScreen` |
 | Insects | 11 | `animal_data.dart` (insectAnimalData) | `InsectsScreen` |
-| Colors | 14 | `color_data.dart` | `ColorsScreen` |
+| Colors | 9 | `color_data.dart` | `ColorsScreen` |
 | Vehicles | 20 | `vehicle_data.dart` | `VehiclesScreen` |
 | Body Parts | 20 | `body_part_data.dart` | `BodyPartsScreen` |
 | Vegetables | 13 | `vegetable_data.dart` | `VegetablesScreen` |

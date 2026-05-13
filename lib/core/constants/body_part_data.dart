@@ -30,5 +30,4 @@ const List<BodyPartItem> bodyPartData = [
   BodyPartItem(name: 'Elbow', emoji: '💪', ttsPhrase: 'Elbow'),
   BodyPartItem(name: 'Shoulder', emoji: '🦾', ttsPhrase: 'Shoulder'),
   BodyPartItem(name: 'Stomach', emoji: '🤰', ttsPhrase: 'Stomach'),
-  BodyPartItem(name: 'Back', emoji: '🔙', ttsPhrase: 'Back'),
 ];

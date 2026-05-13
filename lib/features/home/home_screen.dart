@@ -138,7 +138,7 @@ class HomeScreen extends ConsumerWidget {
                   GradientCategoryCard(
                     title: 'Colors',
                     emoji: '🌈',
-                    subtitle: 'Rainbow & bright',
+                    subtitle: '9 colors to learn',
                     gradient: AppColors.colorGradient,
                     onTap: () => Navigator.pushNamed(
                       context,

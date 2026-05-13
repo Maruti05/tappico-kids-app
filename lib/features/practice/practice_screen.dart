@@ -671,7 +671,7 @@ class _CategoryBottomSheet extends StatelessWidget {
       (QuizCategory.domesticAnimals, '🏠', 'Domestic', '16 pets to learn'),
       (QuizCategory.wildAnimals, '🌿', 'Wild', '31 wild animals'),
       (QuizCategory.insects, '🐛', 'Insects', '11 bugs & critters'),
-      (QuizCategory.colors, '🌈', 'Colors', '14 colors to learn'),
+      (QuizCategory.colors, '🌈', 'Colors', '9 colors to learn'),
       (QuizCategory.vehicles, '🚗', 'Vehicles', '20 vehicles to learn'),
       (QuizCategory.bodyParts, '🧍', 'Body Parts', '20 body parts'),
       (QuizCategory.vegetables, '🥦', 'Vegetables', '13 veggies to learn'),
