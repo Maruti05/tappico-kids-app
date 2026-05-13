@@ -60,8 +60,8 @@ class AppColors {
     Color(0xFFFFB74D),
   ];
   static const List<Color> domesticGradient = [
-    Color(0xFFFF6D00),
-    Color(0xFFFFB74D),
+    Color(0xFFFFA000),
+    Color(0xFFFFD54F),
   ];
   static const List<Color> wildGradient = [
     Color(0xFF2E7D32),

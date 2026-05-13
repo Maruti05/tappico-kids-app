@@ -61,9 +61,6 @@ flutter:
   assets:
     - assets/images/
     - assets/images/shapes/
-    - assets/kokoro/model.onnx
-    - assets/kokoro/voices.bin
-    - assets/kokoro/tokens.txt
 
   fonts:
     - family: Nunito

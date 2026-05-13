@@ -25,6 +25,6 @@ const List<BirdItem> birdData = [
   BirdItem(name: 'Peacock', emoji: '🦚', ttsPhrase: 'Peacock'),
   BirdItem(name: 'Dove', emoji: '🕊️', ttsPhrase: 'Dove'),
   BirdItem(name: 'Turkey', emoji: '🦃', ttsPhrase: 'Turkey'),
-  BirdItem(name: 'Hummingbird', emoji: '🐦', ttsPhrase: 'Hummingbird'),
-  BirdItem(name: 'Bird', emoji: '🐦‍⬛', ttsPhrase: 'Black Bird'),
+  BirdItem(name: 'Bird', emoji: '🐦', ttsPhrase: 'Bird'),
+  BirdItem(name: 'Black Bird', emoji: '🐦‍⬛', ttsPhrase: 'Black Bird'),
 ];

@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/app_constants.dart';
@@ -91,7 +90,7 @@ class TapPicoAppBar extends ConsumerWidget implements PreferredSizeWidget {
           (showBackButton && canPop
               ? Padding(
                   padding: const EdgeInsets.only(left: 14, top: 10, bottom: 10),
-                  child: _GlassButton(
+                  child: GlassButton(
                     icon: Icons.arrow_back_ios_new_rounded,
                     onTap: () {
                       HapticFeedback.lightImpact();
@@ -127,7 +126,7 @@ class TapPicoAppBar extends ConsumerWidget implements PreferredSizeWidget {
         if (showSettings) ...[
           Padding(
             padding: const EdgeInsets.only(right: 8, top: 10, bottom: 10),
-            child: _GlassButton(
+            child: GlassButton(
               icon: soundEnabled
                   ? Icons.volume_up_rounded
                   : Icons.volume_off_rounded,
@@ -141,7 +140,7 @@ class TapPicoAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
           Padding(
             padding: const EdgeInsets.only(right: 14, top: 10, bottom: 10),
-            child: _GlassButton(
+            child: GlassButton(
               icon: Icons.settings_rounded,
               onTap: () {
                 HapticFeedback.lightImpact();
@@ -162,11 +161,11 @@ class TapPicoAppBar extends ConsumerWidget implements PreferredSizeWidget {
 // Glass Button
 // ─────────────────────────────────────────────────────────────
 
-class _GlassButton extends StatelessWidget {
+class GlassButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
 
-  const _GlassButton({required this.icon, required this.onTap});
+  const GlassButton({super.key, required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

@@ -312,6 +312,9 @@ class ShapePainter extends CustomPainter {
       case ShapeType.pentagon:
         _drawPolygon(canvas, Offset(cx, cy), r, 5, paint);
         break;
+      case ShapeType.hexagon:
+        _drawPolygon(canvas, Offset(cx, cy), r, 6, paint);
+        break;
     }
   }
 

@@ -132,3 +132,5 @@ Category gradients: alphabetGradient, numberGradient, shapeGradient, fruitsGradi
 - **Added gradients:** `domesticGradient`, `wildGradient`, `insectGradient` in AppColors
 - **Updated FunFactsStrip** with broken-down stats for each category
 - **Fixed Quick Stats overflow:** Changed `Row` to `Wrap` with `LayoutBuilder` for responsive auto-wrapping with equal gaps
+- **Unified app bar icons:** Made `GlassButton` public widget; practice screen now uses it for category/refresh icons
+- **Fixed gradient clash:** Changed `domesticGradient` from orange → amber (`0xFFFFA000` → `0xFFFFD54F`) to distinguish from number gradient

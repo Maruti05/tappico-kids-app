@@ -466,20 +466,26 @@ class _PracticeScreenState extends ConsumerState<PracticeScreen> {
         showSettings: false,
         gradientColors: AppColors.practiceGradient,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.category_rounded, color: AppColors.textMid),
-            onPressed: () => _showCategorySheet(context),
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: GlassButton(
+              icon: Icons.category_rounded,
+              onTap: () => _showCategorySheet(context),
+            ),
           ),
 
-          IconButton(
-            icon: const Icon(Icons.refresh_rounded),
-            onPressed: () {
-              ref.read(_scoreProvider.notifier).set(0);
+          Padding(
+            padding: const EdgeInsets.only(right: 14),
+            child: GlassButton(
+              icon: Icons.refresh_rounded,
+              onTap: () {
+                ref.read(_scoreProvider.notifier).set(0);
 
-              ref.read(_totalProvider.notifier).set(0);
+                ref.read(_totalProvider.notifier).set(0);
 
-              _nextQuestion();
-            },
+                _nextQuestion();
+              },
+            ),
           ),
         ],
       ),

@@ -28,4 +28,11 @@ const List<FruitItem> fruitData = [
   FruitItem(name: 'Lemon', emoji: '🍋', ttsPhrase: 'Lemon'),
   FruitItem(name: 'Coconut', emoji: '🥥', ttsPhrase: 'Coconut'),
   FruitItem(name: 'Avocado', emoji: '🥑', ttsPhrase: 'Avocado'),
+
+  // Additional accurate fruit emojis
+  FruitItem(name: 'Blueberries', emoji: '🫐', ttsPhrase: 'Blueberries'),
+  FruitItem(name: 'Melon', emoji: '🍈', ttsPhrase: 'Melon'),
+  FruitItem(name: 'Tomato', emoji: '🍅', ttsPhrase: 'Tomato'),
+  FruitItem(name: 'Green Apple', emoji: '🍏', ttsPhrase: 'Green Apple'),
+  FruitItem(name: 'Olive', emoji: '🫒', ttsPhrase: 'Olive'),
 ];
