@@ -16,6 +16,7 @@ class SettingsScreen extends ConsumerWidget {
     final soundEnabled = ref.watch(soundProvider);
     final speechRate = ref.watch(speechRateProvider);
     final eyeProtectorOn = ref.watch(eyeProtectorProvider);
+    final appVersion = ref.watch(appVersionProvider);
 
     return Scaffold(
       backgroundColor: AppColors.bgLight,
@@ -209,11 +210,15 @@ class SettingsScreen extends ConsumerWidget {
               animIndex: 2,
               child: Column(
                 children: [
-                  const _SettingRow(
+                  _SettingRow(
                     icon: Icons.info_outline_rounded,
                     iconColor: AppColors.accent,
                     title: 'Version',
-                    subtitle: '1.0.0',
+                    subtitle: appVersion.when(
+                      data: (v) => v,
+                      loading: () => '...',
+                      error: (_, __) => '—',
+                    ),
                   ),
                   const Divider(height: 1),
                   const _SettingRow(

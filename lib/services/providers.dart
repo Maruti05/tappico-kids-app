@@ -1,6 +1,7 @@
 // lib/services/providers.dart
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../core/constants/app_constants.dart';
 import 'tts_service.dart';
@@ -92,3 +93,9 @@ class EyeProtectorNotifier extends Notifier<bool> {
   }
 }
 final eyeProtectorProvider = NotifierProvider<EyeProtectorNotifier, bool>(EyeProtectorNotifier.new);
+
+// App version from package info
+final appVersionProvider = FutureProvider<String>((ref) async {
+  final info = await PackageInfo.fromPlatform();
+  return '${info.version}+${info.buildNumber}';
+});
