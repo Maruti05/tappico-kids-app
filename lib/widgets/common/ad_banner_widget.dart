@@ -22,18 +22,14 @@ class _AdBannerWidgetState extends State<AdBannerWidget>
   final AdMobService _adService = AdMobService();
 
   BannerAd? _bannerAd;
-  bool _isVisible = false;
+  bool _isLoading = false;
   double _adHeight = 0;
+  double _adWidth = 0;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-    // Delay load to avoid blocking UI frame
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initAd();
-    });
   }
 
   @override
@@ -42,94 +38,103 @@ class _AdBannerWidgetState extends State<AdBannerWidget>
     super.dispose();
   }
 
-  // ================= LIFECYCLE =================
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed && _bannerAd == null) {
-      _initAd(); // reload if needed
+      _initAd();
     }
   }
 
-  // ================= INIT =================
-  Future<void> _initAd() async {
+  Future<void> _initAd([double? availableWidth]) async {
     if (!_adService.shouldShowAds()) return;
 
-    final width = MediaQuery.of(context).size.width;
+    final width = availableWidth ?? MediaQuery.of(context).size.width;
 
     final ad = await _adService.loadBannerAd(
       width: width,
       onLoaded: () {
         if (!mounted) return;
-
         final loadedAd = _adService.bannerAd;
-
         if (loadedAd == null) return;
-
         setState(() {
           _bannerAd = loadedAd;
           _adHeight = loadedAd.size.height.toDouble();
-          _isVisible = true;
+          _adWidth = loadedAd.size.width.toDouble();
+          _isLoading = false;
         });
       },
       onFailed: (error) {
         if (kDebugMode) {
           print('[AdWidget] Load failed: ${error.message}');
         }
-
-        // Silent fail → no UI shown
         if (!mounted) return;
-        setState(() {
-          _isVisible = false;
-        });
+        setState(() { _isLoading = false; });
       },
     );
 
-    // If cached ad exists immediately
     if (ad != null && mounted) {
       setState(() {
         _bannerAd = ad;
         _adHeight = ad.size.height.toDouble();
-        _isVisible = true;
+        _adWidth = ad.size.width.toDouble();
+        _isLoading = false;
       });
+    } else if (mounted) {
+      setState(() { _isLoading = false; });
     }
   }
 
   // ================= BUILD =================
   @override
   Widget build(BuildContext context) {
-    // 🚫 No ad → no UI (important for kids UX)
-    if (!_isVisible || _bannerAd == null) {
-      return const SizedBox.shrink();
-    }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableWidth = constraints.maxWidth - widget.padding.horizontal;
+        if (_bannerAd == null && !_isLoading) {
+          if (availableWidth > 0) {
+            _isLoading = true;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted || _bannerAd != null) return;
+              _initAd(availableWidth);
+            });
+          }
+          return const SizedBox.shrink();
+        }
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (widget.showDivider)
-          Divider(
-            height: 1,
-            color: Theme.of(
-              context,
-            ).colorScheme.outlineVariant.withOpacity(0.2),
-          ),
+        if (_adWidth > availableWidth) {
+          return const SizedBox.shrink();
+        }
 
-        Padding(
-          padding: widget.padding,
-          child: SizedBox(
-            width: double.infinity,
-            height: _adHeight,
-            child: AdWidget(ad: _bannerAd!),
-          ),
-        ),
-
-        if (widget.showDivider)
-          Divider(
-            height: 1,
-            color: Theme.of(
-              context,
-            ).colorScheme.outlineVariant.withOpacity(0.2),
-          ),
-      ],
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.showDivider)
+              Divider(
+                height: 1,
+                color: Theme.of(context)
+                    .colorScheme
+                    .outlineVariant
+                    .withOpacity(0.2),
+              ),
+            Padding(
+              padding: widget.padding,
+              child: SizedBox(
+                width: double.infinity,
+                height: _adHeight,
+                child: AdWidget(ad: _bannerAd!),
+              ),
+            ),
+            if (widget.showDivider)
+              Divider(
+                height: 1,
+                color: Theme.of(context)
+                    .colorScheme
+                    .outlineVariant
+                    .withOpacity(0.2),
+              ),
+          ],
+        );
+      },
     );
   }
 }
