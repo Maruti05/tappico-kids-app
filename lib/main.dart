@@ -39,20 +39,22 @@ class TapPicoApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final eyeProtectorOn = ref.watch(eyeProtectorProvider);
 
+    final app = MaterialApp(
+      title: AppConstants.appName,
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.theme,
+      initialRoute: AppConstants.splashRoute,
+      onGenerateRoute: AppRouter.generateRoute,
+    );
+
+    if (!eyeProtectorOn) return app;
+
     return ColorFiltered(
-      colorFilter: eyeProtectorOn
-          ? const ColorFilter.mode(
-              Color(0x33FF8C00),
-              BlendMode.softLight,
-            )
-          : const ColorFilter.mode(Colors.transparent, BlendMode.dst),
-      child: MaterialApp(
-        title: AppConstants.appName,
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.theme,
-        initialRoute: AppConstants.splashRoute,
-        onGenerateRoute: AppRouter.generateRoute,
+      colorFilter: const ColorFilter.mode(
+        Color(0x33FF8C00),
+        BlendMode.softLight,
       ),
+      child: app,
     );
   }
 }
