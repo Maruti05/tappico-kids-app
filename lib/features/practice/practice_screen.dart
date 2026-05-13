@@ -13,6 +13,10 @@ import '../../core/constants/fruit_data.dart';
 import '../../core/constants/bird_data.dart';
 import '../../core/constants/animal_data.dart';
 import '../../core/constants/number_data.dart';
+import '../../core/constants/color_data.dart';
+import '../../core/constants/vehicle_data.dart';
+import '../../core/constants/body_part_data.dart';
+import '../../core/constants/vegetable_data.dart';
 import '../../core/theme/app_theme.dart';
 import '../../services/providers.dart';
 import '../../widgets/common/tappico_app_bar.dart';
@@ -31,6 +35,10 @@ enum QuizCategory {
   domesticAnimals,
   wildAnimals,
   insects,
+  colors,
+  vehicles,
+  bodyParts,
+  vegetables,
 }
 
 class QuizQuestion {
@@ -318,6 +326,90 @@ QuizQuestion _generateInsectQuestion() {
   );
 }
 
+QuizQuestion _generateColorQuestion() {
+  final rng = Random();
+
+  final correct = colorData[rng.nextInt(colorData.length)];
+
+  final wrongs = (colorData.toList()..shuffle())
+      .where((e) => e.name != correct.name)
+      .take(3)
+      .map((e) => e.name)
+      .toList();
+
+  final opts = [...wrongs, correct.name]..shuffle();
+
+  return QuizQuestion(
+    prompt: 'Tap the color 👇',
+    correctAnswer: correct.name,
+    options: opts,
+    emoji: correct.emoji,
+  );
+}
+
+QuizQuestion _generateVehicleQuestion() {
+  final rng = Random();
+
+  final correct = vehicleData[rng.nextInt(vehicleData.length)];
+
+  final wrongs = (vehicleData.toList()..shuffle())
+      .where((e) => e.name != correct.name)
+      .take(3)
+      .map((e) => e.name)
+      .toList();
+
+  final opts = [...wrongs, correct.name]..shuffle();
+
+  return QuizQuestion(
+    prompt: 'Tap the vehicle 👇',
+    correctAnswer: correct.name,
+    options: opts,
+    emoji: correct.emoji,
+  );
+}
+
+QuizQuestion _generateBodyPartQuestion() {
+  final rng = Random();
+
+  final correct = bodyPartData[rng.nextInt(bodyPartData.length)];
+
+  final wrongs = (bodyPartData.toList()..shuffle())
+      .where((e) => e.name != correct.name)
+      .take(3)
+      .map((e) => e.name)
+      .toList();
+
+  final opts = [...wrongs, correct.name]..shuffle();
+
+  return QuizQuestion(
+    prompt: 'Tap the body part 👇',
+    correctAnswer: correct.name,
+    options: opts,
+    emoji: correct.emoji,
+  );
+}
+
+QuizQuestion _generateVegetableQuestion() {
+  final rng = Random();
+
+  final correct = vegetableData[rng.nextInt(vegetableData.length)];
+
+  final wrongs = (vegetableData.toList()..shuffle())
+      .where((e) => e.name != correct.name)
+      .take(3)
+      .map((e) => e.name)
+      .toList();
+
+  final opts = [...wrongs, correct.name]..shuffle();
+
+  return QuizQuestion(
+    prompt: 'Tap the vegetable 👇',
+    correctAnswer: correct.name,
+    options: opts,
+    emoji: correct.emoji,
+  );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Practice Screen
 // ─────────────────────────────────────────────────────────────────────────────
@@ -401,6 +493,22 @@ class _PracticeScreenState extends ConsumerState<PracticeScreen> {
 
       case QuizCategory.insects:
         q = _generateInsectQuestion();
+        break;
+
+      case QuizCategory.colors:
+        q = _generateColorQuestion();
+        break;
+
+      case QuizCategory.vehicles:
+        q = _generateVehicleQuestion();
+        break;
+
+      case QuizCategory.bodyParts:
+        q = _generateBodyPartQuestion();
+        break;
+
+      case QuizCategory.vegetables:
+        q = _generateVegetableQuestion();
         break;
     }
 
@@ -564,12 +672,16 @@ class _CategoryBottomSheet extends StatelessWidget {
       (QuizCategory.domesticAnimals, '🏠', 'Domestic', '24 pets to learn'),
       (QuizCategory.wildAnimals, '🌿', 'Wild', '70+ wild animals'),
       (QuizCategory.insects, '🐛', 'Insects', '17 bugs & critters'),
+      (QuizCategory.colors, '🌈', 'Colors', '14 colors to learn'),
+      (QuizCategory.vehicles, '🚗', 'Vehicles', '20 vehicles to learn'),
+      (QuizCategory.bodyParts, '🧍', 'Body Parts', '20 body parts'),
+      (QuizCategory.vegetables, '🥦', 'Vegetables', '20 veggies to learn'),
     ];
 
     return DraggableScrollableSheet(
-      initialChildSize: 0.62,
+      initialChildSize: 0.75,
       minChildSize: 0.45,
-      maxChildSize: 0.85,
+      maxChildSize: 0.92,
       expand: false,
       builder: (context, scrollController) {
         return Container(

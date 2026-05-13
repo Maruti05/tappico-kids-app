@@ -12,6 +12,10 @@ import '../../features/birds/birds_screen.dart';
 import '../../features/domestic_animals/domestic_animals_screen.dart';
 import '../../features/wild_animals/wild_animals_screen.dart';
 import '../../features/insects/insects_screen.dart';
+import '../../features/colors/colors_screen.dart';
+import '../../features/vehicles/vehicles_screen.dart';
+import '../../features/body_parts/body_parts_screen.dart';
+import '../../features/vegetables/vegetables_screen.dart';
 import '../../features/practice/practice_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/settings/privacy_policy_screen.dart';
@@ -47,6 +51,18 @@ class AppRouter {
 
       case AppConstants.insectsRoute:
         return _route(const InsectsScreen(), settings);
+
+      case AppConstants.colorsRoute:
+        return _route(const ColorsScreen(), settings);
+
+      case AppConstants.vehiclesRoute:
+        return _route(const VehiclesScreen(), settings);
+
+      case AppConstants.bodyPartsRoute:
+        return _route(const BodyPartsScreen(), settings);
+
+      case AppConstants.vegetablesRoute:
+        return _route(const VegetablesScreen(), settings);
 
       case AppConstants.practiceRoute:
         return _route(const PracticeScreen(), settings);

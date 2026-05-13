@@ -71,6 +71,22 @@ class AppColors {
     Color(0xFF7B1FA2),
     Color(0xFFCE93D8),
   ];
+  static const List<Color> colorGradient = [
+    Color(0xFFFF1744),
+    Color(0xFFFFD600),
+  ];
+  static const List<Color> vehicleGradient = [
+    Color(0xFF1565C0),
+    Color(0xFF64B5F6),
+  ];
+  static const List<Color> bodyPartGradient = [
+    Color(0xFFE91E63),
+    Color(0xFFF48FB1),
+  ];
+  static const List<Color> vegetableGradient = [
+    Color(0xFF2E7D32),
+    Color(0xFF81C784),
+  ];
 
   static const List<Color> homeGradient = [
     Color(0xFF00C853),

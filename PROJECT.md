@@ -124,6 +124,23 @@ Category gradients: alphabetGradient, numberGradient, shapeGradient, fruitsGradi
 - **Persistence:** `SharedPreferences` for sound toggle + speech rate
 - **Data:** `const` lists of model classes with `const` constructors
 
+## Categories
+| Category | Items | Data File | Screen |
+|---|---|---|---|
+| Alphabets | 26 | `alphabet_data.dart` | `AlphabetsScreen` |
+| Numbers | 20 | `number_data.dart` | `NumbersScreen` |
+| Shapes | 9 | `number_data.dart` | `ShapesScreen` |
+| Fruits | 15 | `fruit_data.dart` | `FruitsScreen` |
+| Birds | 14 | `bird_data.dart` | `BirdsScreen` |
+| Animals (combined) | — | `animal_data.dart` | `AnimalsScreen` |
+| Domestic Animals | 24 | `animal_data.dart` (domesticAnimalData) | `DomesticAnimalsScreen` |
+| Wild Animals | 70+ | `animal_data.dart` (wildAnimalData) | `WildAnimalsScreen` |
+| Insects | 17 | `animal_data.dart` (insectAnimalData) | `InsectsScreen` |
+| Colors | 14 | `color_data.dart` | `ColorsScreen` |
+| Vehicles | 20 | `vehicle_data.dart` | `VehiclesScreen` |
+| Body Parts | 20 | `body_part_data.dart` | `BodyPartsScreen` |
+| Vegetables | 20 | `vegetable_data.dart` | `VegetablesScreen` |
+
 ## Recent Changes (May 2026)
 - **Extracted insects** from `wildAnimalData` into separate `insectAnimalData` list
 - **Added 3 new screens:** DomesticAnimalsScreen, WildAnimalsScreen, InsectsScreen
@@ -134,6 +151,7 @@ Category gradients: alphabetGradient, numberGradient, shapeGradient, fruitsGradi
 - **Fixed Quick Stats overflow:** Changed `Row` to `Wrap` with `LayoutBuilder` for responsive auto-wrapping with equal gaps
 - **Unified app bar icons:** Made `GlassButton` public widget; practice screen now uses it for category/refresh icons
 - **Fixed gradient clash:** Changed `domesticGradient` from orange → amber (`0xFFFFA000` → `0xFFFFD54F`) to distinguish from number gradient
+- **Added 4 new categories:** Colors (14 items), Vehicles (20), Body Parts (20), Vegetables (20) with screens, data, routes, gradients, practice quizzes, and homepage cards
 
 ## Refactoring — Shared Widgets (`lib/widgets/learn/`)
 - **`TappableCard`** — Generic animated card wrapper: entrance animation (fade+scale), GestureDetector with position tracking, AnimatedContainer decoration (color/gradient, border, shadow). Parameters: `builder`, `colorIndex`, `isActive`, `animIndex`, `onTap`, `borderRadius`, `gradientColors`, `borderWidth`, `animDelayMs`, `beginScale`.

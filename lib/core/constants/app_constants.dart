@@ -22,6 +22,10 @@ class AppConstants {
   static const String practiceRoute = '/practice';
   static const String settingsRoute = '/settings';
   static const String privacyPolicyRoute = '/privacy-policy';
+  static const String colorsRoute = '/colors';
+  static const String vehiclesRoute = '/vehicles';
+  static const String bodyPartsRoute = '/body-parts';
+  static const String vegetablesRoute = '/vegetables';
 
   // Prefs keys
   static const String soundEnabledKey = 'sound_enabled';
@@ -39,6 +43,7 @@ class AppConstants {
   static const int fruitCrossAxisCount = 1;
   static const int birdCrossAxisCount = 1;
   static const int animalCrossAxisCount = 1;
+  static const int itemCrossAxisCount = 1;
 
   // Animation durations
   static const Duration splashDuration = Duration(milliseconds: 3000);
