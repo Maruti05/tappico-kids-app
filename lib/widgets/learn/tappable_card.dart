@@ -126,11 +126,11 @@ class TappableCardRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
           Text(emoji, style: const TextStyle(fontSize: 56)),
-          const SizedBox(width: 24),
+          const SizedBox(width: 16),
           Expanded(
             child: Text(
               name,
