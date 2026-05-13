@@ -32,8 +32,8 @@ final _tappedPositionProvider =
       _TappedPositionNotifier.new,
     );
 
-class InsectsScreen extends ConsumerWidget {
-  const InsectsScreen({super.key});
+class AnimalsScreen extends ConsumerWidget {
+  const AnimalsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,8 +42,8 @@ class InsectsScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.bgLight,
       appBar: const TapPicoAppBar(
-        title: 'Insects',
-        gradientColors: AppColors.insectGradient,
+        title: 'Animals',
+        gradientColors: AppColors.animalsGradient,
       ),
       body: Stack(
         children: [
@@ -53,7 +53,7 @@ class InsectsScreen extends ConsumerWidget {
             child: Column(
               children: [
                 const AdBannerWidget(),
-                const InfoHeader(label: 'Bugs & critters! 🐛'),
+                const InfoHeader(label: 'Discover animals! 🐾'),
                 Expanded(
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -62,9 +62,9 @@ class InsectsScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SectionHeader(
-                          emoji: '🐛',
-                          title: 'Insects',
-                          countLabel: '17 insects',
+                          emoji: '🏠',
+                          title: 'Domestic Animals',
+                          countLabel: '24 animals',
                         ),
                         const SizedBox(height: 8),
                         GridView.builder(
@@ -77,15 +77,60 @@ class InsectsScreen extends ConsumerWidget {
                                 mainAxisSpacing: 16,
                                 childAspectRatio: 2.5,
                               ),
-                          itemCount: insectAnimalData.length,
+                          itemCount: domesticAnimalData.length,
                           itemBuilder: (context, index) {
-                            final item = insectAnimalData[index];
+                            final item = domesticAnimalData[index];
                             final isActive = tapped?.name == item.name;
                             return RepaintBoundary(
                               child: TappableCard(
-                                colorIndex: index,
+                                colorIndex: animalData.indexOf(item) % AppColors.letterColors.length,
                                 isActive: isActive,
                                 animIndex: index,
+                                onTap: (position) async {
+                                  ref.read(_tappedPositionProvider.notifier).set(position);
+                                  ref.read(_tappedAnimalProvider.notifier).set(item);
+                                  ref.read(ttsServiceProvider).speak(item.ttsPhrase);
+                                  await Future.delayed(const Duration(milliseconds: 2200));
+                                  if (ref.read(_tappedAnimalProvider)?.name == item.name) {
+                                    ref.read(_tappedAnimalProvider.notifier).set(null);
+                                  }
+                                },
+                                builder: (color, active) => TappableCardRow(
+                                  emoji: item.emoji,
+                                  name: item.name,
+                                  color: color,
+                                  isActive: active,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 28),
+                        const SectionHeader(
+                          emoji: '🌿',
+                          title: 'Wild Animals',
+                          countLabel: '70+ animals',
+                        ),
+                        const SizedBox(height: 8),
+                        GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: AppConstants.animalCrossAxisCount,
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 16,
+                                childAspectRatio: 2.5,
+                              ),
+                          itemCount: wildAnimalData.length,
+                          itemBuilder: (context, index) {
+                            final item = wildAnimalData[index];
+                            final isActive = tapped?.name == item.name;
+                            return RepaintBoundary(
+                              child: TappableCard(
+                                colorIndex: animalData.indexOf(item) % AppColors.letterColors.length,
+                                isActive: isActive,
+                                animIndex: domesticAnimalData.length + index,
                                 onTap: (position) async {
                                   ref.read(_tappedPositionProvider.notifier).set(position);
                                   ref.read(_tappedAnimalProvider.notifier).set(item);

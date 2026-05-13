@@ -134,3 +134,12 @@ Category gradients: alphabetGradient, numberGradient, shapeGradient, fruitsGradi
 - **Fixed Quick Stats overflow:** Changed `Row` to `Wrap` with `LayoutBuilder` for responsive auto-wrapping with equal gaps
 - **Unified app bar icons:** Made `GlassButton` public widget; practice screen now uses it for category/refresh icons
 - **Fixed gradient clash:** Changed `domesticGradient` from orange → amber (`0xFFFFA000` → `0xFFFFD54F`) to distinguish from number gradient
+
+## Refactoring — Shared Widgets (`lib/widgets/learn/`)
+- **`TappableCard`** — Generic animated card wrapper: entrance animation (fade+scale), GestureDetector with position tracking, AnimatedContainer decoration (color/gradient, border, shadow). Parameters: `builder`, `colorIndex`, `isActive`, `animIndex`, `onTap`, `borderRadius`, `gradientColors`, `borderWidth`, `animDelayMs`, `beginScale`.
+- **`TappableCardRow`** — Pre-built row layout for cards with emoji • name • volume icon.
+- **`TapOverlay`** — Reusable overlay with backdrop, elastic scale animation, gradient card. Takes `child`, `color`, `onDismiss`, `width`.
+- **`InfoHeader`** — Header row with label + badge ("Tap to hear! 👂"). Customizable `badgeText`, `badgeColor`.
+- **`SectionHeader`** — Section label with emoji, title, count badge.
+- **`RepaintBoundary`** added around every grid item for performance.
+- Removed ~2000+ lines of duplicated code across 9 screens.
