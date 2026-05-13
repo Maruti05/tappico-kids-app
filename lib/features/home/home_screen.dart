@@ -171,7 +171,7 @@ class HomeScreen extends ConsumerWidget {
                   GradientCategoryCard(
                     title: 'Vegetables',
                     emoji: '🥦',
-                    subtitle: 'Healthy eats',
+                    subtitle: '13 healthy eats',
                     gradient: AppColors.vegetableGradient,
                     onTap: () => Navigator.pushNamed(
                       context,

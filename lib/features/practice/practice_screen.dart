@@ -674,7 +674,7 @@ class _CategoryBottomSheet extends StatelessWidget {
       (QuizCategory.colors, '🌈', 'Colors', '14 colors to learn'),
       (QuizCategory.vehicles, '🚗', 'Vehicles', '20 vehicles to learn'),
       (QuizCategory.bodyParts, '🧍', 'Body Parts', '20 body parts'),
-      (QuizCategory.vegetables, '🥦', 'Vegetables', '20 veggies to learn'),
+      (QuizCategory.vegetables, '🥦', 'Vegetables', '13 veggies to learn'),
     ];
 
     return DraggableScrollableSheet(

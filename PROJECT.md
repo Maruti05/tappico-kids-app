@@ -139,7 +139,7 @@ Category gradients: alphabetGradient, numberGradient, shapeGradient, fruitsGradi
 | Colors | 14 | `color_data.dart` | `ColorsScreen` |
 | Vehicles | 20 | `vehicle_data.dart` | `VehiclesScreen` |
 | Body Parts | 20 | `body_part_data.dart` | `BodyPartsScreen` |
-| Vegetables | 20 | `vegetable_data.dart` | `VegetablesScreen` |
+| Vegetables | 13 | `vegetable_data.dart` | `VegetablesScreen` |
 
 ## Recent Changes (May 2026)
 - **Extracted insects** from `wildAnimalData` into separate `insectAnimalData` list
