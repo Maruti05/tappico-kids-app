@@ -600,51 +600,50 @@ class _PracticeScreenState extends ConsumerState<PracticeScreen> {
       body: SafeArea(
         top: false,
         bottom: false,
-        child: Column(
-          children: [
-            const AdBannerWidget(),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: Column(
-                  children: [
-                    _ScoreBar(score: score, total: total),
-                    const SizedBox(height: 20),
-                    if (question != null) ...[
-                      _QuestionCard(
-                        question: question,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Column(
+              children: [
+                const AdBannerWidget(),
+                const SizedBox(height: 8),
+                _ScoreBar(score: score, total: total),
+                const SizedBox(height: 20),
+                if (question != null) ...[
+                  _QuestionCard(
+                    question: question,
+                    answerState: answerState,
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  GridView.count(
+                    crossAxisCount:
+                        MediaQuery.of(context).size.width > 600 ? 3 : 2,
+                    crossAxisSpacing: 14,
+                    mainAxisSpacing: 14,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: question.options.map((opt) {
+                      return _OptionCard(
+                        option: opt,
+                        correct: question.correctAnswer,
                         answerState: answerState,
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      Expanded(
-                        child: GridView.count(
-                          crossAxisCount:
-                              MediaQuery.of(context).size.width > 600 ? 3 : 2,
-                          crossAxisSpacing: 14,
-                          mainAxisSpacing: 14,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: question.options.map((opt) {
-                            return _OptionCard(
-                              option: opt,
-                              correct: question.correctAnswer,
-                              answerState: answerState,
-                              selected: ref.watch(_selectedAnswerProvider),
-                              onTap: () => _onAnswer(opt),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ] else
-                      const Expanded(
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
-                  ],
-                ),
-              ),
+                        selected: ref.watch(_selectedAnswerProvider),
+                        onTap: () => _onAnswer(opt),
+                      );
+                    }).toList(),
+                  ),
+                ] else
+                  const SizedBox(
+                    height: 200,
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                SizedBox(height: MediaQuery.of(context).padding.bottom + 24),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
