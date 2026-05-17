@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/alphabet_data.dart';
+import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
 import '../../services/providers.dart';
 import '../../widgets/common/tappico_app_bar.dart';
@@ -78,7 +79,7 @@ class AlphabetsScreen extends ConsumerWidget {
                             ref.read(_tappedPositionProvider.notifier).set(position);
                             ref.read(_tappedLetterProvider.notifier).set(item);
                             ref.read(ttsServiceProvider).speak(item.ttsPhrase);
-                            await Future.delayed(const Duration(milliseconds: 2200));
+                            await Future.delayed(AppConstants.itemPopupDuration);
                             if (ref.read(_tappedLetterProvider)?.letter == item.letter) {
                               ref.read(_tappedLetterProvider.notifier).set(null);
                             }

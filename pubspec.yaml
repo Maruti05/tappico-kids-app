@@ -1,7 +1,7 @@
 name: tappico
 description: TapPico - Kids ABC & 123 Learning App
 publish_to: 'none'
-version: 0.1.1+2
+version: 0.2.2+5
 
 environment:
   sdk: ^3.11.4
@@ -14,36 +14,30 @@ dependencies:
 
   # TTS
   flutter_tts: ^4.0.2
-  sherpa_onnx: ^1.13.1
-  path_provider: ^2.1.0
+  flutter_kitten_tts: ^0.0.4
+  audioplayers: ^6.6.0
+
 
   # Animations
-  lottie: ^3.1.0
-  animate_do: ^5.1.0
   flutter_animate: ^4.5.0
 
   # UI
-  google_fonts: ^8.0.2
-  flutter_screenutil: ^5.9.3
-  gap: ^3.0.1
-  smooth_page_indicator: ^2.0.1
+  google_fonts: ^8.1.0
 
   # Storage
   shared_preferences: ^2.2.3
-
-  # Icons
-  iconsax_flutter: ^1.0.0
-
-  # Utils
-  audioplayers: ^6.0.0  
 
   flutter_markdown: ^0.7.7+1
 
   google_mobile_ads: ^8.0.0
 
-  connectivity_plus: ^6.0.0
+  connectivity_plus: ^7.1.1
 
-  package_info_plus: ^8.0.0
+  # package_info_plus: ^9.0.1  # Temporarily disabled - causes build issues
+
+  share_plus: ^10.1.4
+
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

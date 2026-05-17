@@ -80,11 +80,6 @@ class AppRouter {
 
   // ================= MAIN ROUTE =================
   static PageRouteBuilder _route(Widget page, RouteSettings settings) {
-    final curved = CurvedAnimation(
-      parent: const AlwaysStoppedAnimation(1), // placeholder (replaced below)
-      curve: Curves.easeOutCubic,
-    );
-
     return PageRouteBuilder(
       settings: settings, // ✅ IMPORTANT
       pageBuilder: (_, animation, _) {

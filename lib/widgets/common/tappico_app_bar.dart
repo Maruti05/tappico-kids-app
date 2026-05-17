@@ -71,7 +71,7 @@ class TapPicoAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
             boxShadow: [
               BoxShadow(
-                color: colors.first.withOpacity(0.28),
+                color: colors.first.withValues(alpha: 0.28),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -178,11 +178,11 @@ class GlassButton extends StatelessWidget {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.16),
+            color: Colors.white.withValues(alpha: 0.16),
 
             borderRadius: BorderRadius.circular(18),
 
-            border: Border.all(color: Colors.white.withOpacity(0.12)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
           ),
           child: Icon(icon, color: Colors.white, size: 24),
         ),

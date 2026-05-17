@@ -40,8 +40,6 @@ subprojects {
     tasks.withType<JavaCompile>().configureEach {
         sourceCompatibility = "17"
         targetCompatibility = "17"
-
-        // Optional: suppress old plugin warnings
         options.compilerArgs.add("-Xlint:-options")
     }
 

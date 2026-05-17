@@ -759,8 +759,8 @@ class _CategoryBottomSheet extends StatelessWidget {
                               boxShadow: [
                                 BoxShadow(
                                   color: isSelected
-                                      ? AppColors.purple.withOpacity(0.25)
-                                      : Colors.black.withOpacity(0.04),
+                                      ? AppColors.purple.withValues(alpha: 0.25)
+                                      : Colors.black.withValues(alpha: 0.04),
                                   blurRadius: 14,
                                   offset: const Offset(0, 6),
                                 ),
@@ -774,8 +774,8 @@ class _CategoryBottomSheet extends StatelessWidget {
                                   height: 60,
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? Colors.white.withOpacity(0.2)
-                                        : AppColors.purple.withOpacity(0.1),
+                                        ? Colors.white.withValues(alpha: 0.2)
+                                        : AppColors.purple.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(18),
                                   ),
                                   child: Center(
@@ -873,7 +873,7 @@ class _ScoreBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -904,7 +904,7 @@ class _ScoreBar extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.15),
+                  color: AppColors.primary.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -966,14 +966,14 @@ class _QuestionCard extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [bgColor, bgColor.withOpacity(0.7)],
+          colors: [bgColor, bgColor.withValues(alpha: 0.7)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: bgColor.withOpacity(0.4),
+            color: bgColor.withValues(alpha: 0.4),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -1056,7 +1056,7 @@ class _OptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Color cardColor = Colors.white;
     Color textColor = AppColors.textDark;
-    Color borderColor = AppColors.purple.withOpacity(0.25);
+    Color borderColor = AppColors.purple.withValues(alpha: 0.25);
 
     if (answerState != _AnswerState.none) {
       if (option == correct) {
@@ -1085,8 +1085,8 @@ class _OptionCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: cardColor == Colors.white
-                  ? Colors.black.withOpacity(0.07)
-                  : cardColor.withOpacity(0.4),
+                  ? Colors.black.withValues(alpha: 0.07)
+                  : cardColor.withValues(alpha: 0.4),
               blurRadius: 12,
               offset: const Offset(0, 5),
             ),

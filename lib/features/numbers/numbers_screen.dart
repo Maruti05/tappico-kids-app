@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/number_data.dart';
+import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
 import '../../services/providers.dart';
 import '../../widgets/common/tappico_app_bar.dart';
@@ -98,7 +99,7 @@ class NumbersScreen extends ConsumerWidget {
                             ref.read(_tappedPositionProvider.notifier).set(position);
                             ref.read(_tappedNumberProvider.notifier).set(item);
                             ref.read(ttsServiceProvider).speak(item.ttsPhrase);
-                            await Future.delayed(const Duration(milliseconds: 2000));
+                            await Future.delayed(AppConstants.itemPopupDuration);
                             if (ref.read(_tappedNumberProvider)?.number == item.number) {
                               ref.read(_tappedNumberProvider.notifier).set(null);
                             }

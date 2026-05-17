@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
 import '../../services/providers.dart';
@@ -15,6 +18,9 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final soundEnabled = ref.watch(soundProvider);
     final speechRate = ref.watch(speechRateProvider);
+    final currentVoice = ref.watch(voiceNameProvider);
+    final currentEngine = ref.watch(ttsEngineProvider);
+    final isKittenAvailable = ref.watch(isKittenAvailableProvider);
     final eyeProtectorOn = ref.watch(eyeProtectorProvider);
     final appVersion = ref.watch(appVersionProvider);
 
@@ -58,7 +64,7 @@ class SettingsScreen extends ConsumerWidget {
                     trailing: Switch.adaptive(
                       value: soundEnabled,
                       onChanged: (v) => ref.read(soundProvider.notifier).set(v),
-                      activeColor: AppColors.primary,
+                      activeTrackColor: AppColors.primary,
                     ),
                   ),
                   const Divider(height: 1),
@@ -105,7 +111,7 @@ class SettingsScreen extends ConsumerWidget {
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: AppColors.secondary.withOpacity(0.15),
+                                color: AppColors.secondary.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
@@ -177,11 +183,150 @@ class SettingsScreen extends ConsumerWidget {
             ),
 
             const SizedBox(height: 24),
-            const _SectionTitle('Visual Settings'),
+            const _SectionTitle('Voice Settings'),
             const SizedBox(height: 12),
 
             _SettingsCard(
               animIndex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.record_voice_over_rounded,
+                          color: AppColors.primary,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Voice',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.textDark,
+                                ),
+                              ),
+                              Text(
+                                'Choose a character voice',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textLight,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: (isKittenAvailable
+                                    ? AppColors.primary
+                                    : AppColors.textLight)
+                                .withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            isKittenAvailable ? 'Kitten AI' : 'Device',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              color: isKittenAvailable
+                                  ? AppColors.primary
+                                  : AppColors.textLight,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    _buildVoiceGroup(
+                      'Female',
+                      Icons.female_rounded,
+                      AppColors.primary,
+                      AppConstants.femaleVoices,
+                      currentVoice,
+                      ref,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildVoiceGroup(
+                      'Male',
+                      Icons.male_rounded,
+                      AppColors.secondary,
+                      AppConstants.maleVoices,
+                      currentVoice,
+                      ref,
+                    ),
+                    if (isKittenAvailable) ...[
+                      const SizedBox(height: 16),
+                      const Divider(height: 1),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.smart_toy_rounded,
+                            color: AppColors.purple,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Kitten AI Engine',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textDark,
+                                  ),
+                                ),
+                                Text(
+                                  currentEngine == AppConstants.ttsEngineKitten
+                                      ? 'On — neural voice quality'
+                                      : 'Off — using device TTS',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    color: AppColors.textLight,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Switch.adaptive(
+                            value: currentEngine == AppConstants.ttsEngineKitten,
+                            onChanged: (v) {
+                              ref.read(ttsEngineProvider.notifier).setEngine(
+                                v
+                                    ? AppConstants.ttsEngineKitten
+                                    : AppConstants.ttsEngineDefault,
+                              );
+                            },
+                            activeTrackColor: AppColors.purple,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+            const _SectionTitle('Visual Settings'),
+            const SizedBox(height: 12),
+
+            _SettingsCard(
+              animIndex: 2,
               child: _SettingRow(
                 icon: eyeProtectorOn
                     ? Icons.remove_red_eye_rounded
@@ -197,7 +342,7 @@ class SettingsScreen extends ConsumerWidget {
                   value: eyeProtectorOn,
                   onChanged: (v) =>
                       ref.read(eyeProtectorProvider.notifier).set(v),
-                  activeColor: AppColors.secondary,
+                  activeTrackColor: AppColors.secondary,
                 ),
               ),
             ),
@@ -207,7 +352,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 12),
 
             _SettingsCard(
-              animIndex: 2,
+              animIndex: 3,
               child: Column(
                 children: [
                   _SettingRow(
@@ -217,7 +362,7 @@ class SettingsScreen extends ConsumerWidget {
                     subtitle: appVersion.when(
                       data: (v) => v,
                       loading: () => '...',
-                      error: (_, __) => '—',
+                      error: (_, _) => '—',
                     ),
                   ),
                   const Divider(height: 1),
@@ -236,7 +381,6 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                   const Divider(height: 1),
 
-                  /// ✅ WORKING NAVIGATION
                   _SettingRow(
                     icon: Icons.privacy_tip_outlined,
                     iconColor: AppColors.cyan,
@@ -253,6 +397,42 @@ class SettingsScreen extends ConsumerWidget {
                       );
                     },
                   ),
+                  const Divider(height: 1),
+                  _SettingRow(
+                    icon: Icons.share_rounded,
+                    iconColor: AppColors.primary,
+                    title: 'Share TapPico',
+                    subtitle: 'Share this app with friends & family',
+                    trailing: const Icon(
+                      Icons.chevron_right_rounded,
+                      color: Color(0xFF888AAA),
+                    ),
+                    onTap: () {
+                      Share.share(
+                        '🎉 Check out TapPico - Kids ABC & 123 Learning App!\n\n'
+                        'https://play.google.com/store/apps/details?id=${AppConstants.packageName}',
+                      );
+                    },
+                  ),
+                  const Divider(height: 1),
+                  _SettingRow(
+                    icon: Icons.star_rounded,
+                    iconColor: AppColors.accent,
+                    title: 'Rate TapPico',
+                    subtitle: 'Love the app? Leave a review!',
+                    trailing: const Icon(
+                      Icons.chevron_right_rounded,
+                      color: Color(0xFF888AAA),
+                    ),
+                    onTap: () async {
+                      final uri = Uri.parse(
+                        'https://play.google.com/store/apps/details?id=${AppConstants.packageName}',
+                      );
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(uri, mode: LaunchMode.externalApplication);
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
@@ -266,6 +446,71 @@ class SettingsScreen extends ConsumerWidget {
     if (rate <= 0.35) return 'Slow';
     if (rate <= 0.55) return 'Normal';
     return 'Fast';
+  }
+
+  static Widget _buildVoiceGroup(
+    String label,
+    IconData icon,
+    Color color,
+    List<String> voices,
+    String currentVoice,
+    WidgetRef ref,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, size: 16, color: color),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: voices.map((voice) {
+            final isSelected = currentVoice == voice;
+            return InkWell(
+              borderRadius: BorderRadius.circular(20),
+              onTap: () => ref
+                  .read(voiceNameProvider.notifier)
+                  .set(voice),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected ? color : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected ? color : color.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Text(
+                  voice,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: isSelected ? Colors.white : color,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
+    );
   }
 }
 
@@ -285,7 +530,7 @@ class _AppInfoCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: AppColors.pink.withOpacity(0.35),
+            color: AppColors.pink.withValues(alpha: 0.35),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -297,7 +542,7 @@ class _AppInfoCard extends StatelessWidget {
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.25),
+              color: Colors.white.withValues(alpha: 0.25),
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Center(
@@ -374,7 +619,7 @@ class _SettingsCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
               blurRadius: 16,
               offset: const Offset(0, 4),
             ),
@@ -417,7 +662,7 @@ class _SettingRow extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.15),
+                  color: iconColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: iconColor, size: 20),
@@ -483,7 +728,7 @@ class _SpeedChip extends StatelessWidget {
           border: Border.all(
             color: isSelected
                 ? AppColors.secondary
-                : AppColors.secondary.withOpacity(0.3),
+                : AppColors.secondary.withValues(alpha: 0.3),
           ),
         ),
         child: Text(

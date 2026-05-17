@@ -1,12 +1,8 @@
-// lib/services/providers.dart
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../core/constants/app_constants.dart';
 import 'tts_service.dart';
 
-// TTS service provider
 final ttsServiceProvider = Provider<TtsService>((ref) {
   final service = TtsService();
   ref.onDispose(() => service.dispose());
@@ -47,7 +43,59 @@ class SpeechRateNotifier extends Notifier<double> {
   }
 }
 
-final speechRateProvider = NotifierProvider<SpeechRateNotifier, double>(SpeechRateNotifier.new);
+final speechRateProvider =
+    NotifierProvider<SpeechRateNotifier, double>(SpeechRateNotifier.new);
+
+// Voice name notifier
+class VoiceNameNotifier extends Notifier<String> {
+  @override
+  String build() {
+    return ref.watch(ttsServiceProvider).voiceName;
+  }
+
+  Future<void> set(String voice) async {
+    await ref.read(ttsServiceProvider).setVoice(voice);
+    state = voice;
+  }
+}
+
+// TTS engine (kitten / default) notifier
+class TtsEngineNotifier extends Notifier<String> {
+  @override
+  String build() {
+    return AppConstants.defaultTtsEngine;
+  }
+
+  Future<void> setEngine(String engine) async {
+    await ref.read(ttsServiceProvider).setEngine(engine);
+    state = engine;
+  }
+}
+
+final ttsEngineProvider =
+    NotifierProvider<TtsEngineNotifier, String>(TtsEngineNotifier.new);
+
+final voiceNameProvider =
+    NotifierProvider<VoiceNameNotifier, String>(VoiceNameNotifier.new);
+
+// Available voices
+final availableVoicesProvider = Provider<List<String>>((ref) {
+  return AppConstants.availableVoices;
+});
+
+// Gender-specific voice lists
+final femaleVoicesProvider = Provider<List<String>>((ref) {
+  return AppConstants.femaleVoices;
+});
+
+final maleVoicesProvider = Provider<List<String>>((ref) {
+  return AppConstants.maleVoices;
+});
+
+// Kitten TTS availability
+final isKittenAvailableProvider = Provider<bool>((ref) {
+  return ref.watch(ttsServiceProvider).isKittenAvailable;
+});
 
 // Currently tapped item (for animation)
 class TappedItemNotifier extends Notifier<String?> {
@@ -55,7 +103,9 @@ class TappedItemNotifier extends Notifier<String?> {
   String? build() => null;
   void set(String? item) => state = item;
 }
-final tappedItemProvider = NotifierProvider<TappedItemNotifier, String?>(TappedItemNotifier.new);
+
+final tappedItemProvider =
+    NotifierProvider<TappedItemNotifier, String?>(TappedItemNotifier.new);
 
 // Auto play state
 class AutoPlayNotifier extends Notifier<bool> {
@@ -64,7 +114,9 @@ class AutoPlayNotifier extends Notifier<bool> {
   void set(bool val) => state = val;
   void toggle() => state = !state;
 }
-final autoPlayProvider = NotifierProvider<AutoPlayNotifier, bool>(AutoPlayNotifier.new);
+
+final autoPlayProvider =
+    NotifierProvider<AutoPlayNotifier, bool>(AutoPlayNotifier.new);
 
 // Eye protector (blue light filter)
 class EyeProtectorNotifier extends Notifier<bool> {
@@ -92,10 +144,13 @@ class EyeProtectorNotifier extends Notifier<bool> {
     state = value;
   }
 }
-final eyeProtectorProvider = NotifierProvider<EyeProtectorNotifier, bool>(EyeProtectorNotifier.new);
+
+final eyeProtectorProvider =
+    NotifierProvider<EyeProtectorNotifier, bool>(EyeProtectorNotifier.new);
 
 // App version from package info
+// Temporarily using hardcoded version due to build compatibility issues
 final appVersionProvider = FutureProvider<String>((ref) async {
-  final info = await PackageInfo.fromPlatform();
-  return '${info.version}+${info.buildNumber}';
+  // TODO: Re-enable package_info_plus when build issues are resolved
+  return '0.2.1+4';
 });

@@ -48,7 +48,7 @@ class _TapOverlayState extends ConsumerState<TapOverlay>
     return GestureDetector(
       onTap: widget.onDismiss,
       child: Container(
-        color: Colors.black.withOpacity(0.4),
+        color: Colors.black.withValues(alpha: 0.4),
         child: Center(
           child: ScaleTransition(
             scale: _scale,
@@ -57,14 +57,14 @@ class _TapOverlayState extends ConsumerState<TapOverlay>
               padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [widget.color, widget.color.withOpacity(0.8)],
+                  colors: [widget.color, widget.color.withValues(alpha: 0.8)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(40),
                 boxShadow: [
                   BoxShadow(
-                    color: widget.color.withOpacity(0.5),
+                    color: widget.color.withValues(alpha: 0.5),
                     blurRadius: 40,
                     offset: const Offset(0, 16),
                   ),

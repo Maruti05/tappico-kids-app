@@ -77,7 +77,7 @@ class BodyPartsScreen extends ConsumerWidget {
                             ref.read(_tappedPositionProvider.notifier).set(position);
                             ref.read(_tappedBodyPartProvider.notifier).set(item);
                             ref.read(ttsServiceProvider).speak(item.ttsPhrase);
-                            await Future.delayed(const Duration(milliseconds: 2200));
+                            await Future.delayed(AppConstants.itemPopupDuration);
                             if (ref.read(_tappedBodyPartProvider)?.name == item.name) {
                               ref.read(_tappedBodyPartProvider.notifier).set(null);
                             }

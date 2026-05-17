@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/number_data.dart';
+import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_theme.dart';
 import '../../services/providers.dart';
 import '../../widgets/common/tappico_app_bar.dart';
@@ -98,7 +99,7 @@ class ShapesScreen extends ConsumerWidget {
                             ref.read(_tappedPositionProvider.notifier).set(position);
                             ref.read(_tappedShapeProvider.notifier).set(item);
                             ref.read(ttsServiceProvider).speak(item.ttsPhrase);
-                            await Future.delayed(const Duration(milliseconds: 2400));
+                            await Future.delayed(AppConstants.itemPopupDuration);
                             if (ref.read(_tappedShapeProvider)?.name == item.name) {
                               ref.read(_tappedShapeProvider.notifier).set(null);
                             }
@@ -174,7 +175,7 @@ class ShapesScreen extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: Colors.white.withOpacity(0.85),
+                      color: Colors.white.withValues(alpha: 0.85),
                     ),
                     textAlign: TextAlign.center,
                   ),

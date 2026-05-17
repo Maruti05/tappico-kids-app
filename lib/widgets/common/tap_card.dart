@@ -61,7 +61,7 @@ class _TapCardState extends State<TapCard> with SingleTickerProviderStateMixin {
                 ? []
                 : [
                     BoxShadow(
-                      color: widget.color.withOpacity(0.45),
+                      color: widget.color.withValues(alpha: 0.45),
                       blurRadius: widget.elevation * 2,
                       offset: Offset(0, widget.elevation * 0.6),
                     ),

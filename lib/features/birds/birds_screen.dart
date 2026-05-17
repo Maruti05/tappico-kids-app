@@ -77,7 +77,7 @@ class BirdsScreen extends ConsumerWidget {
                             ref.read(_tappedPositionProvider.notifier).set(position);
                             ref.read(_tappedBirdProvider.notifier).set(item);
                             ref.read(ttsServiceProvider).speak(item.ttsPhrase);
-                            await Future.delayed(const Duration(milliseconds: 2200));
+                            await Future.delayed(AppConstants.itemPopupDuration);
                             if (ref.read(_tappedBirdProvider)?.name == item.name) {
                               ref.read(_tappedBirdProvider.notifier).set(null);
                             }

@@ -93,7 +93,7 @@ class _TappableCardState extends State<TappableCard> {
                 color: (activeGradient != null
                         ? activeGradient[0]
                         : color
-                    ).withOpacity(widget.isActive ? 0.45 : 0.18),
+                    ).withValues(alpha: widget.isActive ? 0.45 : 0.18),
                 blurRadius: widget.isActive ? 18 : 8,
                 offset: const Offset(0, 4),
               ),
@@ -148,7 +148,7 @@ class TappableCardRow extends StatelessWidget {
           ),
           Icon(
             Icons.volume_up_rounded,
-            color: isActive ? Colors.white70 : color.withOpacity(0.5),
+            color: isActive ? Colors.white70 : color.withValues(alpha: 0.5),
             size: 28,
           ),
         ],
