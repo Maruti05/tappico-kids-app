@@ -12,8 +12,8 @@ class AdMobService {
 
   // ================= CONFIG =================
   static const String _androidBannerId =
-      'ca-app-pub-3940256099942544/6300978111';
-  static const String _iosBannerId = 'ca-app-pub-3940256099942544/2934735716';
+      'ca-app-pub-6224944600468190/7159312045';
+  static const String _iosBannerId = 'ca-app-pub-6224944600468190/7159312045';
 
   static String get bannerAdUnitId {
     if (Platform.isAndroid) return _androidBannerId;

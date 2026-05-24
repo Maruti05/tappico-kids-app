@@ -37,7 +37,7 @@ class AppConstants {
   // TTS engine options
   static const String ttsEngineKitten = 'kitten';
   static const String ttsEngineDefault = 'default';
-  static const String defaultTtsEngine = ttsEngineKitten;
+  static const String defaultTtsEngine = ttsEngineDefault;
 
   // TTS
   static const double defaultVoiceSpeed = 0.5;
