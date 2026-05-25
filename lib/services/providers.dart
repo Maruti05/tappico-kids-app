@@ -46,57 +46,6 @@ class SpeechRateNotifier extends Notifier<double> {
 final speechRateProvider =
     NotifierProvider<SpeechRateNotifier, double>(SpeechRateNotifier.new);
 
-// Voice name notifier
-class VoiceNameNotifier extends Notifier<String> {
-  @override
-  String build() {
-    return ref.watch(ttsServiceProvider).voiceName;
-  }
-
-  Future<void> set(String voice) async {
-    await ref.read(ttsServiceProvider).setVoice(voice);
-    state = voice;
-  }
-}
-
-// TTS engine (kitten / default) notifier
-class TtsEngineNotifier extends Notifier<String> {
-  @override
-  String build() {
-    return AppConstants.defaultTtsEngine;
-  }
-
-  Future<void> setEngine(String engine) async {
-    await ref.read(ttsServiceProvider).setEngine(engine);
-    state = engine;
-  }
-}
-
-final ttsEngineProvider =
-    NotifierProvider<TtsEngineNotifier, String>(TtsEngineNotifier.new);
-
-final voiceNameProvider =
-    NotifierProvider<VoiceNameNotifier, String>(VoiceNameNotifier.new);
-
-// Available voices
-final availableVoicesProvider = Provider<List<String>>((ref) {
-  return AppConstants.availableVoices;
-});
-
-// Gender-specific voice lists
-final femaleVoicesProvider = Provider<List<String>>((ref) {
-  return AppConstants.femaleVoices;
-});
-
-final maleVoicesProvider = Provider<List<String>>((ref) {
-  return AppConstants.maleVoices;
-});
-
-// Kitten TTS availability
-final isKittenAvailableProvider = Provider<bool>((ref) {
-  return ref.watch(ttsServiceProvider).isKittenAvailable;
-});
-
 // Currently tapped item (for animation)
 class TappedItemNotifier extends Notifier<String?> {
   @override

@@ -52,9 +52,9 @@ class _TapOverlayState extends ConsumerState<TapOverlay>
         child: Center(
           child: ScaleTransition(
             scale: _scale,
-            child: Container(
+              child: Container(
               width: widget.width,
-              padding: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [widget.color, widget.color.withValues(alpha: 0.8)],
@@ -70,7 +70,10 @@ class _TapOverlayState extends ConsumerState<TapOverlay>
                   ),
                 ],
               ),
-              child: widget.child,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: widget.child,
+              ),
             ),
           ),
         ),

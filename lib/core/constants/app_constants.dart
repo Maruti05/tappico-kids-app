@@ -30,42 +30,12 @@ class AppConstants {
   // Prefs keys
   static const String soundEnabledKey = 'sound_enabled';
   static const String voiceSpeedKey = 'voice_speed';
-  static const String voiceNameKey = 'voice_name';
   static const String eyeProtectorKey = 'eye_protector';
-  static const String ttsEngineKey = 'tts_engine';
-
-  // TTS engine options
-  static const String ttsEngineKitten = 'kitten';
-  static const String ttsEngineDefault = 'default';
-  static const String defaultTtsEngine = ttsEngineDefault;
 
   // TTS
   static const double defaultVoiceSpeed = 0.5;
   static const double slowVoiceSpeed = 0.35;
   static const double fastVoiceSpeed = 0.7;
-  static const String defaultVoiceName = 'Bella';
-
-  static const Map<String, String> voiceGenderMap = {
-    'Bella': 'female',
-    'Jasper': 'male',
-    'Luna': 'female',
-    'Bruno': 'male',
-    'Rosie': 'female',
-    'Hugo': 'male',
-    'Kiki': 'female',
-    'Leo': 'male',
-  };
-
-  static const List<String> availableVoices = [
-    'Bella', 'Jasper', 'Luna', 'Bruno',
-    'Rosie', 'Hugo', 'Kiki', 'Leo',
-  ];
-
-  static List<String> get femaleVoices =>
-      availableVoices.where((v) => voiceGenderMap[v] == 'female').toList();
-
-  static List<String> get maleVoices =>
-      availableVoices.where((v) => voiceGenderMap[v] == 'male').toList();
 
   // Grid
   static const int alphabetCrossAxisCount = 4;

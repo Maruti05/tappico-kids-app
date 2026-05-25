@@ -61,8 +61,7 @@ TapPico is an ad-supported kids educational app that makes early learning fun an
 
 ### 🔊 Text-to-Speech
 
-- Dual engine support: device `flutter_tts` (default) and Kitten AI neural voice
-- 8 character voices: Bella, Jasper, Luna, Bruno, Rosie, Hugo, Kiki, Leo
+- `flutter_tts` engine for text-to-speech
 - Adjustable speech speed (Slow / Normal / Fast)
 - Speech queue for sequential playback
 - Single characters get "... " suffix for clarity
@@ -73,8 +72,7 @@ TapPico is an ad-supported kids educational app that makes early learning fun an
 |---------|-------------|
 | Sound Effects | Toggle all audio on/off |
 | Voice Speed | Slider (0.2–0.9) with Slow / Normal / Fast presets |
-| Voice Selection | Choose from 8 character voices (male/female) |
-| TTS Engine | Toggle between device TTS and Kitten AI neural engine |
+
 | Eye Protector | Amber color filter across the entire app to reduce blue light |
 
 ### 🎨 Visual Design
@@ -91,8 +89,7 @@ TapPico is an ad-supported kids educational app that makes early learning fun an
 All user preferences are saved via `SharedPreferences`:
 - Sound enabled / disabled
 - Speech rate
-- Selected voice name
-- TTS engine choice
+
 - Eye protector mode
 
 ---
@@ -117,7 +114,7 @@ All user preferences are saved via `SharedPreferences`:
 | Framework | [Flutter](https://flutter.dev) (SDK ^3.11) |
 | State Management | [Riverpod](https://riverpod.dev) ^3.3.1 |
 | Text-to-Speech | [flutter_tts](https://pub.dev/packages/flutter_tts) ^4.0.2 |
-| Neural TTS | [flutter_kitten_tts](https://pub.dev/packages/flutter_kitten_tts) ^0.0.4 |
+
 | Audio Playback | [audioplayers](https://pub.dev/packages/audioplayers) ^6.6.0 |
 | Animations | [flutter_animate](https://pub.dev/packages/flutter_animate) ^4.5.0 |
 | Fonts | [Google Fonts](https://pub.dev/packages/google_fonts) (Nunito) |

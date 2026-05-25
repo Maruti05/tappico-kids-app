@@ -18,9 +18,6 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final soundEnabled = ref.watch(soundProvider);
     final speechRate = ref.watch(speechRateProvider);
-    final currentVoice = ref.watch(voiceNameProvider);
-    final currentEngine = ref.watch(ttsEngineProvider);
-    final isKittenAvailable = ref.watch(isKittenAvailableProvider);
     final eyeProtectorOn = ref.watch(eyeProtectorProvider);
     final appVersion = ref.watch(appVersionProvider);
 
@@ -183,150 +180,11 @@ class SettingsScreen extends ConsumerWidget {
             ),
 
             const SizedBox(height: 24),
-            const _SectionTitle('Voice Settings'),
-            const SizedBox(height: 12),
-
-            _SettingsCard(
-              animIndex: 1,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.record_voice_over_rounded,
-                          color: AppColors.primary,
-                          size: 22,
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Voice',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.textDark,
-                                ),
-                              ),
-                              Text(
-                                'Choose a character voice',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.textLight,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: (isKittenAvailable
-                                    ? AppColors.primary
-                                    : AppColors.textLight)
-                                .withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            isKittenAvailable ? 'Kitten AI' : 'Device',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                              color: isKittenAvailable
-                                  ? AppColors.primary
-                                  : AppColors.textLight,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    _buildVoiceGroup(
-                      'Female',
-                      Icons.female_rounded,
-                      AppColors.primary,
-                      AppConstants.femaleVoices,
-                      currentVoice,
-                      ref,
-                    ),
-                    const SizedBox(height: 12),
-                    _buildVoiceGroup(
-                      'Male',
-                      Icons.male_rounded,
-                      AppColors.secondary,
-                      AppConstants.maleVoices,
-                      currentVoice,
-                      ref,
-                    ),
-                    if (isKittenAvailable) ...[
-                      const SizedBox(height: 16),
-                      const Divider(height: 1),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.smart_toy_rounded,
-                            color: AppColors.purple,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Kitten AI Engine',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.textDark,
-                                  ),
-                                ),
-                                Text(
-                                  currentEngine == AppConstants.ttsEngineKitten
-                                      ? 'On — neural voice quality'
-                                      : 'Off — using device TTS',
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    color: AppColors.textLight,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Switch.adaptive(
-                            value: currentEngine == AppConstants.ttsEngineKitten,
-                            onChanged: (v) {
-                              ref.read(ttsEngineProvider.notifier).setEngine(
-                                v
-                                    ? AppConstants.ttsEngineKitten
-                                    : AppConstants.ttsEngineDefault,
-                              );
-                            },
-                            activeTrackColor: AppColors.purple,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 24),
             const _SectionTitle('Visual Settings'),
             const SizedBox(height: 12),
 
             _SettingsCard(
-              animIndex: 2,
+              animIndex: 1,
               child: _SettingRow(
                 icon: eyeProtectorOn
                     ? Icons.remove_red_eye_rounded
@@ -352,7 +210,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 12),
 
             _SettingsCard(
-              animIndex: 3,
+              animIndex: 2,
               child: Column(
                 children: [
                   _SettingRow(
@@ -446,71 +304,6 @@ class SettingsScreen extends ConsumerWidget {
     if (rate <= 0.35) return 'Slow';
     if (rate <= 0.55) return 'Normal';
     return 'Fast';
-  }
-
-  static Widget _buildVoiceGroup(
-    String label,
-    IconData icon,
-    Color color,
-    List<String> voices,
-    String currentVoice,
-    WidgetRef ref,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(icon, size: 16, color: color),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w800,
-                color: color,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: voices.map((voice) {
-            final isSelected = currentVoice == voice;
-            return InkWell(
-              borderRadius: BorderRadius.circular(20),
-              onTap: () => ref
-                  .read(voiceNameProvider.notifier)
-                  .set(voice),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: isSelected ? color : Colors.transparent,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isSelected ? color : color.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: Text(
-                  voice,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: isSelected ? Colors.white : color,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
-    );
   }
 }
 
